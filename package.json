@@ -1,0 +1,17 @@
+{
+  "name": "drip-telegram-shop",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "live-server --port=8000 --no-browser --entry-file=index.html",
+    "smoke": "node test/smoke.js",
+    "e2e": "node test/e2e.js"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {
+    "jsdom": "^22.1.0",
+    "puppeteer": "^24.29.1"
+  }
+}
