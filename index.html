@@ -10,7 +10,7 @@
       /* Dark (default) — luxury palette */
       --bg:#05060a; --card:#0b0d13; --stroke:rgba(255,255,255,.06);
       --text:#eef2f7; --muted:#868fa0; --brand:#1c2d4f; --brand2:#d4af37;
-      --danger:#ef4444; --ok:#10b981; --r:18px; --shadow:0 12px 30px rgba(0,0,0,.45);
+      --danger:#ef4444; --ok:#10b981; --r:18px; --shadow:0 16px 40px rgba(0,0,0,.35);
       /* motion */
       --motion-fast:160ms; --motion-medium:200ms;
     }
@@ -24,8 +24,8 @@
     html,body{height:100%}
     body{
       margin:0;color:var(--text);font-family:ui-sans-serif,system-ui,Segoe UI,Inter,Arial;
-      /* mostly solid background with a subtle vignette */
-      background: linear-gradient(180deg, rgba(0,0,0,0.06), transparent), var(--bg);
+      /* mostly-solid background */
+      background: var(--bg);
     }
     .app{max-width:760px;margin:0 auto;padding:12px 12px 96px}
     header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(11,12,16,.95),rgba(11,12,16,.6) 60%,transparent);backdrop-filter:blur(8px);padding:10px 8px 6px}
@@ -101,6 +101,9 @@
 
     /* logo + category chips */
     .logo{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;background:var(--brand2);color:var(--brand);font-size:12px;border:1px solid rgba(255,255,255,0.04)}
+    .brandmark{display:flex;align-items:center;gap:8px}
+    .brandmark-logo{width:24px;height:24px;border-radius:999px;border:1px solid var(--brand2);background:radial-gradient(circle at 30% 20%,rgba(212,175,55,.4),rgba(5,6,10,1));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+    .brandmark-word{font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase}
     .cat-row{display:flex;gap:8px;overflow:auto;margin-top:12px}
     .cat-chip{padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);background:transparent;color:var(--muted);font-size:13px;cursor:pointer}
     .cat-chip.active{background:var(--brand);border-color:var(--brand2);color:var(--text)}
@@ -521,13 +524,13 @@ function renderHome(app){
   app.innerHTML = `
     <header>
       <div class="row">
-        <div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div>
+        <div class="brandmark"><div class="brandmark-logo">DC</div><div class="brandmark-word">Drip Club</div></div>
         <div class="grow"></div>
         <div style="display:flex;gap:8px;align-items:center">
           <a class="link" href="${SUPPORT_LINK}">Support</a>
         </div>
       </div>
-      <div style="margin-top:10px;font-size:13px;color:var(--muted);display:flex;gap:12px;align-items:center">✅ Verified stock · ↩ 30-day returns · 💬 Telegram support</div>
+      <div class="trust-row muted" style="font-size:12px;margin-top:4px;">✅ Verified stock &nbsp;·&nbsp; ↩ 30-day returns &nbsp;·&nbsp; 💬 Telegram support</div>
     </header>
 
     <div class="section">
@@ -551,7 +554,7 @@ function renderPDP(app,id){
   try{ addRecent(p.id); }catch(e){}
   const sel=(p.sizes&&p.sizes.length?p.sizes[0]:"—");
   app.innerHTML=
-    `<header><div class="row"><div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
+    `<header><div class="row"><div class="brandmark"><div class="brandmark-logo">DC</div><div class="brandmark-word">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
     <div class="section">
       <div class="box">
         <div class="gallery" style="position:relative;overflow:hidden;aspect-ratio:4/5;margin-bottom:10px">
@@ -625,7 +628,7 @@ function renderCheckout(app){
   const left=Math.max(0,Math.floor((state.hold.expiresAt-Date.now())/1000));
   const ref=state.order?.uniqueRef??uniqueRef();
   app.innerHTML=`
-    <header><div class="row"><div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
+    <header><div class="row"><div class="brandmark"><div class="brandmark-logo">DC</div><div class="brandmark-word">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
     <div class="section">
       <div class="box">
         <div class="row-between"><div class="title">Your bag</div><a class="link" href="#" onclick="go('home')">Add more</a></div>
@@ -680,7 +683,7 @@ function renderConfirm(app){
   setBack(false);
   const o=state.order??load("lastOrder",null); if(!o){go("home");return}
   app.innerHTML=`
-    <header><div class="row"><div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
+    <header><div class="row"><div class="brandmark"><div class="brandmark-logo">DC</div><div class="brandmark-word">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
     <div class="section">
       <div class="box">
         <div class="row-between"><div class="title" style="font-size:16px">Thanks — we’ll verify your transfer</div><div class="pill">Under review</div></div>
@@ -711,7 +714,7 @@ function renderConfirm(app){
 function renderReturns(app){
   setBack(true,()=>go("home"));
   app.innerHTML=`
-    <header><div class="row"><div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button></div></div></header>
+    <header><div class="row"><div class="brandmark"><div class="brandmark-logo">DC</div><div class="brandmark-word">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button></div></div></header>
     <div class="section"><div class="box">
       <p>Returns within <b>30 days</b> in original condition. Email receipts are required.</p>
       <p>To start a return, message us: <a class="link" href="${SUPPORT_LINK}">Open chat</a> and include your order ID.</p>
