@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+  <title>Drip Club — Shop</title>
+  <script src="https://tg.dev/js/telegram-web-app.js?7"></script>
+  <style>
+    :root{
+      --bg:#0b0c10; --card:#0f1519; --stroke:rgba(255,255,255,.08);
+      --text:#eef2f7; --muted:#9aa3af; --brand:#7c5cff; --brand2:#2ea6ff;
+      --danger:#ef4444; --ok:#10b981; --r:18px; --shadow:0 16px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,Segoe UI,Inter,Arial}
+    .app{max-width:760px;margin:0 auto;padding:12px 12px 96px}
+    header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(11,12,16,.9),rgba(11,12,16,.6) 60%,transparent);backdrop-filter:blur(8px);padding:10px 8px 6px}
+    .row{display:flex;align-items:center;gap:10px}
+    .grow{flex:1}
+    .title{font-weight:700;letter-spacing:.2px}
+    .tabs{display:flex;gap:8px;overflow:auto;padding:6px 2px 10px}
+    .tab{padding:8px 12px;border:1px solid var(--stroke);border-radius:999px;background:rgba(255,255,255,.02);white-space:nowrap;font-size:14px}
+    .tab.active{border-color:rgba(124,92,255,.6);background:linear-gradient(90deg,rgba(124,92,255,.15),rgba(46,166,255,.15))}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .card{background:var(--card);border:1px solid var(--stroke);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+    .img{aspect-ratio:4/5;background:#101620;display:block;width:100%;object-fit:cover}
+    .pad{padding:10px}
+    .brand{font-size:12px;color:var(--muted);letter-spacing:.3px}
+    .name{font-size:14px;font-weight:600;line-height:1.3;margin:2px 0 6px}
+    .price{font-weight:700}
+    .low{color:#f59e0b;font-size:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;border:1px solid var(--stroke);background:linear-gradient(90deg,rgba(124,92,255,.12),rgba(46,166,255,.12));padding:10px 12px;font-weight:600;cursor:pointer}
+    .btn.full{width:100%}
+    .muted{color:var(--muted)}
+    .section{padding:12px}
+    .box{background:var(--card);border:1px solid var(--stroke);border-radius:var(--r);padding:12px}
+    .row-between{display:flex;justify-content:space-between;align-items:center}
+    .pill{padding:6px 10px;border:1px solid var(--stroke);border-radius:999px;color:var(--muted);font-size:12px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.3px}
+    .field{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+    input,select,textarea{background:#0c1117;border:1px solid var(--stroke);border-radius:12px;padding:12px 12px;color:var(--text);font-size:15px;outline:none}
+    .copy{border:1px dashed var(--stroke);border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+    .copy button{background:#151b23;border:1px solid var(--stroke);color:var(--text);padding:6px 10px;border-radius:10px;cursor:pointer}
+    .footerbar{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:8px 12px;background:linear-gradient(0deg,rgba(11,12,16,.98),rgba(11,12,16,.85) 55%,transparent);backdrop-filter:blur(8px)}
+    .cartbar{max-width:760px;margin:0 auto;border:1px solid var(--stroke);background:rgba(255,255,255,.03);padding:8px 12px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+    .link{color:#a5b4fc;text-decoration:none}
+    .danger{color:var(--danger)}
+    .ok{color:var(--ok)}
+    .list{display:flex;flex-direction:column;gap:10px}
+    .line{display:flex;align-items:center;gap:10px}
+    .qty{display:flex;gap:8px;align-items:center}
+    .qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--stroke);background:#121923;color:var(--text);cursor:pointer}
+    .hr{height:1px;background:var(--stroke);margin:10px 0}
+    .help{font-size:12px;color:var(--muted);margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="app" id="app"></div>
+  <div class="footerbar">
+    <div class="cartbar mono" id="cartbar" style="display:none">
+      <div id="cartbar-left">🛒 0 items</div>
+      <div id="cartbar-right">£0.00</div>
+    </div>
+  </div>
+
+<script>
+/* ====== CONFIG ====== */
+const BANK = {
+  payee: "DRIP CLUB LTD",
+  sortCode: "04-00-04",
+  accountNo: "12345678",
+  iban: "GB12BARC04000412345678"
+};
+const SUPPORT_LINK = "tg://resolve?domain=YOUR_BOT_USERNAME&start=help"; // replace
+const RETURNS_LINK = "#returns";
+
+/* ====== DATA (seed) ====== */
+const CATEGORIES = ["Men","Women","Fragrance","Electronics"];
+const PRODUCTS = [
+  {id:"g1",cat:"Men",brand:"Nike",name:"Tech Fleece Hoodie",price:89.99,stock:3,sizes:["S","M","L"],img:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g2",cat:"Men",brand:"Jordan",name:"Jumpman Tee",price:34.99,stock:12,sizes:["S","M","L","XL"],img:"https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g3",cat:"Women",brand:"Adidas",name:"3-Stripes Leggings",price:29.99,stock:2,sizes:["XS","S","M"],img:"https://images.unsplash.com/photo-1542293787938-c9e299b88054?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g4",cat:"Fragrance",brand:"Dior",name:"Sauvage 100 ml",price:84.00,stock:6,sizes:["100ml"],img:"https://images.unsplash.com/photo-1563170423-18f482d82cc8?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g5",cat:"Electronics",brand:"Apple",name:"AirPods Pro (2nd Gen)",price:199.00,stock:5,sizes:["—"],img:"https://images.unsplash.com/photo-1606229365485-93a3b8ee038e?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g6",cat:"Men",brand:"The North Face",name:"1996 Nuptse",price:249.00,stock:1,sizes:["M","L"],img:"https://images.unsplash.com/photo-1548883354-7622d03acae1?q=80&w=1200&auto=format&fit=crop"}
+];
+
+/* ====== STATE ====== */
+const tg = window.Telegram?.WebApp ?? {MainButton:{},BackButton:{},HapticFeedback:{}};
+const state = {
+  route:{name:"home",params:{}},
+  tab:"Men",
+  cart: load("cart", []),
+  hold:null, // {expiresAt}
+  user:{ email:"", phone:"", name:"", address:"", city:"", postcode:"", country:"United Kingdom" },
+  order:null
+};
+
+/* ====== HELPERS ====== */
+const el = sel => document.querySelector(sel);
+const £ = n => "£"+(n.toFixed(2));
+const sum = items => items.reduce((a,b)=>a + b.price*b.qty, 0);
+const uid = (len=6)=>Math.random().toString(36).slice(2,2+len).toUpperCase();
+const uniqueRef = ()=>"DRIP-"+new Date().toISOString().slice(2,10).replace(/-/g,"")+"-"+uid(6);
+function save(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
+function load(key,def){ try{ return JSON.parse(localStorage.getItem(key)) ?? def }catch{ return def } }
+function haptic(kind="impact"){ try{ tg.HapticFeedback?.impactOccurred?.(kind) }catch{} }
+function copy(text, node){
+  navigator.clipboard.writeText(text).then(()=>{
+    if(node){ node.innerText="Copied"; setTimeout(()=> node.innerText="Copy", 900); }
+    haptic("soft");
+  });
+}
+function setMainButton(text, onClick){
+  tg.MainButton?.show?.(); tg.MainButton?.setParams?.({text});
+  tg.MainButton?.onClick?.(()=>{}); // clear old
+  tg.MainButton?.onClick?.(onClick);
+}
+function hideMain(){ tg.MainButton?.hide?.(); }
+function setBack(show, handler){
+  if(show){ tg.BackButton?.show?.(); tg.BackButton?.onClick?.(()=>handler?.()); }
+  else { tg.BackButton?.hide?.(); tg.BackButton?.onClick?.(()=>{}); }
+}
+function updateCartBar(){
+  const items = state.cart.reduce((a,b)=>a+b.qty,0);
+  const total = sum(state.cart);
+  const bar = el("#cartbar");
+  if(items>0){ bar.style.display="block"; el("#cartbar-left").innerText = "🛒 "+items+" item"+(items>1?"s":""); el("#cartbar-right").innerText = £(total); }
+  else { bar.style.display="none"; hideMain(); }
+}
+
+/* ====== NAV ====== */
+function go(name, params={}){ state.route = {name, params}; render(); }
+
+/* ====== RENDER ====== */
+function render(){
+  const app = el("#app");
+  if(state.route.name==="home") return renderHome(app);
+  if(state.route.name==="pdp") return renderPDP(app, state.route.params.id);
+  if(state.route.name==="checkout") return renderCheckout(app);
+  if(state.route.name==="confirm") return renderConfirm(app);
+  if(state.route.name==="returns") return renderReturns(app);
+}
+
+function renderHome(app){
+  setBack(false);
+  const list = PRODUCTS.filter(p=>p.cat===state.tab);
+  let tabs = '';
+  CATEGORIES.forEach(c=>{
+    tabs += '<button class="tab '+(c===state.tab?'active':'')+'" onclick="state.tab=\''+c+'\';render()">'+c+'</button>';
+  });
+  let grid = '';
+  list.forEach(p=>{
+    grid += ''
+    + '<article class="card" onclick="go(\'pdp\',{id:\''+p.id+'\'});">'
+    +   '<img class="img" src="'+p.img+'" alt="'+p.name+'"/>'
+    +   '<div class="pad">'
+    +     '<div class="brand">'+p.brand+'</div>'
+    +     '<div class="name">'+p.name+'</div>'
+    +     '<div class="row-between">'
+    +       '<div class="price">'+£(p.price)+'</div>'
+    +       (p.stock<=3?'<div class="low mono">Only '+p.stock+' left</div>':'')
+    +     '</div>'
+    +   '</div>'
+    + '</article>';
+  });
+  app.innerHTML = ''
+  + '<header>'
+  +   '<div class="row">'
+  +     '<div class="title">Drip Club</div>'
+  +     '<div class="grow"></div>'
+  +     '<a class="link" href="'+SUPPORT_LINK+'">Support</a>'
+  +   '</div>'
+  +   '<div class="tabs">'+tabs+'</div>'
+  + '</header>'
+  + '<div class="section">'
+  +   '<div class="grid">'+grid+'</div>'
+  +   '<div class="help">Returns & Delivery → <a class="link" href="#" onclick="go(\'returns\')">Read policy</a></div>'
+  + '</div>';
+
+  updateCartBar();
+  if(state.cart.length>0){
+    setMainButton('Checkout — '+£(sum(state.cart)), ()=> go('checkout'));
+  } else hideMain();
+}
+
+function renderPDP(app, id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!p){ go("home"); return }
+  setBack(true, ()=> go("home"));
+  const sel = (p.sizes&&p.sizes.length?p.sizes[0]:"—");
+  app.innerHTML = ''
+  + '<header><div class="row"><div class="title">'+p.brand+'</div><div class="grow"></div><a class="link" href="'+SUPPORT_LINK+'">Support</a></div></header>'
+  + '<div class="section"><div class="box">'
+  + '<img class="img" src="'+p.img+'" alt="'+p.name+'"/>'
+  + '<div class="row-between" style="margin-top:10px"><div class="name" style="font-size:16px">'+p.name+'</div><div class="price mono">'+£(p.price)+'</div></div>'
+  + (p.stock<=3?'<div class="low">Only '+p.stock+' left</div>':'')
+  + '<div class="field"><label class="muted">Size</label>'
+  +   '<select id="size">'+p.sizes.map(s=>'<option '+(s===sel?'selected':'')+'>'+s+'</option>').join('')+'</select>'
+  + '</div>'
+  + '<p class="muted" style="font-size:13px">Authenticity: only verifiable designs. No ghosts.</p>'
+  + '<div class="hr"></div>'
+  + '<button class="btn full" onclick="addToCart(\''+p.id+'\')">Add to Cart</button>'
+  + '<div class="help">Having trouble? <a class="link" href="'+SUPPORT_LINK+'">Chat to support</a></div>'
+  + '</div></div>';
+
+  setMainButton('Checkout — '+£(sum(state.cart)), ()=> state.cart.length?go("checkout"):addToCart(p.id));
+  updateCartBar();
+}
+
+function addToCart(id){
+  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  const selEl = el("#size"); const sel = selEl? selEl.value : (p.sizes?.[0] ?? "—");
+  const existing = state.cart.find(i=>i.id===id && i.size===sel);
+  if(existing){ existing.qty = Math.min(existing.qty+1, 99); }
+  else { state.cart.push({id, name:p.name, price:p.price, size:sel, qty:1}); }
+  save("cart", state.cart);
+  haptic("rigid");
+  updateCartBar();
+  setMainButton('Checkout — '+£(sum(state.cart)), ()=> go("checkout"));
+}
+
+function renderCartList(){
+  if(state.cart.length===0) return '<div class="muted">Cart is empty.</div>';
+  let list = '<div class="list">';
+  state.cart.forEach((it,idx)=>{
+    list += ''
+    + '<div class="box">'
+    +   '<div class="row-between">'
+    +     '<div>'
+    +       '<div class="name">'+it.name+'</div>'
+    +       '<div class="muted mono" style="font-size:12px">'+it.size+'</div>'
+    +     '</div>'
+    +     '<div class="mono">'+£(it.price*it.qty)+'</div>'
+    +   '</div>'
+    +   '<div class="row-between" style="margin-top:8px">'
+    +     '<div class="qty">'
+    +       '<button onclick="decQty('+idx+')">−</button>'
+    +       '<div class="mono">'+it.qty+'</div>'
+    +       '<button onclick="incQty('+idx+')">+</button>'
+    +     '</div>'
+    +     '<button class="btn" onclick="removeItem('+idx+')">Remove</button>'
+    +   '</div>'
+    + '</div>';
+  });
+  list += '</div>';
+  return list;
+}
+function incQty(i){ state.cart[i].qty=Math.min(state.cart[i].qty+1,99); save("cart",state.cart); render(); }
+function decQty(i){ state.cart[i].qty=Math.max(state.cart[i].qty-1,1); save("cart",state.cart); render(); }
+function removeItem(i){
+  const removed = state.cart.splice(i,1)[0]; save("cart",state.cart); render();
+  toastUndo(removed);
+}
+function toastUndo(item){
+  haptic("soft");
+  const n = document.createElement("div");
+  n.className="box"; n.style.position="fixed"; n.style.left="12px"; n.style.right="12px"; n.style.bottom="72px"; n.style.zIndex="60";
+  n.innerHTML = '<div class="row-between"><div>Removed <span class="mono">'+item.name+'</span></div><button class="btn" id="undo">Undo</button></div>';
+  document.body.appendChild(n);
+  let t = setTimeout(()=> n.remove(), 3000);
+  n.querySelector("#undo").onclick = ()=>{ clearTimeout(t); state.cart.push(item); save("cart",state.cart); n.remove(); render(); };
+}
+
+/* ====== CHECKOUT ====== */
+function renderCheckout(app){
+  if(state.cart.length===0){ go("home"); return }
+  setBack(true, ()=> go("home"));
+  const subtotal = sum(state.cart);
+  const shipping = subtotal>=100?0:4.95;
+  const total = +(subtotal+shipping).toFixed(2);
+  if(!state.hold){ state.hold = { expiresAt: Date.now()+45*60*1000 }; }
+  const left = Math.max(0, Math.floor((state.hold.expiresAt - Date.now())/1000));
+  const ref = state.order?.uniqueRef ?? uniqueRef();
+
+  app.innerHTML = ''
+  + '<header><div class="row"><div class="title">Checkout</div><div class="grow"></div><a class="link" href="'+SUPPORT_LINK+'">Support</a></div></header>'
+  + '<div class="section">'
+
+  + '<div class="box">'
+  +   '<div class="row-between"><div class="title">Your bag</div><a class="link" href="#" onclick="go(\'home\')">Add more</a></div>'
+  +   renderCartList()
+  +   '<div class="hr"></div>'
+  +   '<div class="row-between"><div class="muted">Subtotal</div><div class="mono">'+£(subtotal)+'</div></div>'
+  +   '<div class="row-between"><div class="muted">Shipping</div><div class="mono">'+(shipping===0?'Free':£(shipping))+'</div></div>'
+  +   '<div class="row-between" style="margin-top:8px"><div>Total</div><div class="mono" style="font-weight:700">'+£(total)+'</div></div>'
+  +   '<div class="help mono">We’ll reserve these for <span id="hold">00:00</span> while you pay.</div>'
+  + '</div>'
+
+  + '<div class="box">'
+  +   '<div class="title" style="font-size:16px">Contact & Delivery</div>'
+  +   renderField("email","you@example.com")
+  +   + renderField("phone","")
+  +   + renderField("name","")
+  +   + renderField("address","")
+  +   + renderField("city","")
+  +   + renderField("postcode","")
+  +   + '<div class="field"><label class="muted">Country</label><input id="f-country" value="'+(state.user.country||"United Kingdom")+'"/></div>'
+  + '</div>'
+
+  + '<div class="box">'
+  +   '<div class="row-between"><div class="title" style="font-size:16px">Pay by bank</div></div>'
+  +   '<button class="btn full" style="margin-bottom:10px" onclick="openBankingPay('+total+', \''+ref+'\')">Pay by bank (Open Banking)</button>'
+  +   '<div class="help">Or pay manually using your banking app. Include the reference below so we can auto-match your payment.</div>'
+  +   copyRow("Payee",BANK.payee)
+  +   + copyRow("Sort code",BANK.sortCode)
+  +   + copyRow("Account no.",BANK.accountNo)
+  +   + copyRow("IBAN",BANK.iban)
+  +   + copyRow("Amount",£(total), String(total))
+  +   + copyRow("Unique reference",ref, ref, "ref")
+  +   + '<div class="help">Questions about payment? <a class="link" href="'+SUPPORT_LINK+'">Chat to support</a></div>'
+  + '</div>'
+
+  + '<div class="box">'
+  +   '<div class="row-between"><div class="title" style="font-size:16px">After you’ve paid</div></div>'
+  +   '<div class="help">Tap the button below. We’ll verify and update your order here.</div>'
+  +   '<div class="field"><label class="muted">Upload proof (optional)</label><input type="file" id="proof" accept="image/*,application/pdf"/></div>'
+  +   '<button class="btn full" onclick="placeOrder('+total+', \''+ref+'\')">I’ve paid — place order</button>'
+  +   '<div class="help">Returns? See <a class="link" href="#" onclick="go(\'returns\')">policy</a>.</div>'
+  + '</div>'
+
+  + '</div>';
+
+  setMainButton('Checkout — '+£(total), ()=> el("button.btn.full")?.click());
+  updateCartBar();
+  tickHold(left);
+}
+
+function renderField(key, placeholder){
+  const v = state.user[key]??"";
+  return '<div class="field"><label class="muted">'+cap(key)+'</label><input id="f-'+key+'" value="'+v+'" placeholder="'+(placeholder||'')+'"/></div>';
+}
+function copyRow(label, value, rawCopy, id){
+  const copyVal = (rawCopy!==undefined? rawCopy : value);
+  return '<div class="copy"><div><div class="muted">'+label+'</div><div class="mono" '+(id?'id="'+id+'"':'')+'>'+value+'</div></div><button onclick="copy(\''+copyVal.replace(/'/g,"\\'")+'\', this)">Copy</button></div>';
+}
+function cap(s){ return s? s[0].toUpperCase()+s.slice(1) : s; }
+
+function tickHold(seconds){
+  function fmt(s){ const m=String(Math.floor(s/60)).padStart(2,"0"); const ss=String(s%60).padStart(2,"0"); return m+':'+ss; }
+  const n = el("#hold"); if(!n) return;
+  let s = seconds; n.innerText = fmt(s);
+  const id = setInterval(()=>{ s = Math.max(0, s-1); n.innerText = fmt(s); if(s===0){ clearInterval(id); state.hold=null; } },1000);
+}
+
+function openBankingPay(amount, ref){
+  // Placeholder demo — later replace with real provider deep link + return handler
+  state.order = {
+    id: 'O-'+Date.now(),
+    uniqueRef: ref,
+    items: state.cart,
+    subtotal: +sum(state.cart).toFixed(2),
+    shipping: +(sum(state.cart)>=100?0:4.95).toFixed(2),
+    total:+amount.toFixed(2),
+    user: {...state.user},
+    payment:{method:"open_banking", status:"AWAITING_PROVIDER"},
+    status:"AWAITING_PAYMENT",
+    proof:null
+  };
+  save("lastOrder", state.order);
+  haptic("soft");
+  alert("Open Banking placeholder: imagine your bank app opened.\nReturning to order confirmation…");
+  // Attempt save; non-blocking
+  fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(state.order)}).catch(()=>{});
+  state.cart = []; save("cart", state.cart);
+  go("confirm");
+}
+
+async function placeOrder(total, ref){
+  ["email","phone","name","address","city","postcode","country"].forEach(k=>{
+    const v = el("#f-"+k); state.user[k] = v? (v.value||"").trim() : (state.user[k]||"");
+  });
+  const order = {
+    id: 'O-'+Date.now(),
+    uniqueRef: ref || (el("#ref")?.innerText || uniqueRef()),
+    items: state.cart,
+    subtotal: +sum(state.cart).toFixed(2),
+    shipping: +(sum(state.cart)>=100?0:4.95).toFixed(2),
+    total:+(+total||sum(state.cart)).toFixed(2),
+    user: {...state.user},
+    payment:{method:"bank_transfer", status:"AWAITING_REVIEW"},
+    status:"AWAITING_PAYMENT",
+    proof:null
+  };
+  const file = el("#proof")?.files?.[0];
+  if(file){ order.proof = { name:file.name, size:file.size, type:file.type }; }
+
+  try{
+    await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(order)});
+  }catch(e){}
+
+  state.order = order;
+  save("lastOrder", order);
+  state.cart = []; save("cart", state.cart);
+  haptic("soft");
+  go("confirm");
+}
+
+/* ====== CONFIRM ====== */
+function renderConfirm(app){
+  setBack(false);
+  const o = state.order ?? load("lastOrder", null);
+  if(!o){ go("home"); return }
+  let lines = '';
+  o.items.forEach(it=>{
+    lines += '<div class="row-between"><div>'+it.name+' <span class="muted">('+it.size+')</span> × '+it.qty+'</div><div class="mono">'+£(it.qty*it.price)+'</div></div>';
+  });
+
+  app.innerHTML = ''
+  + '<header><div class="row"><div class="title">Order placed</div><div class="grow"></div><a class="link" href="'+SUPPORT_LINK+'">Support</a></div></header>'
+  + '<div class="section">'
+  +   '<div class="box">'
+  +     '<div class="row-between"><div class="title" style="font-size:16px">Thanks — we’ll verify your transfer</div><div class="pill">Under review</div></div>'
+  +     '<div class="help">We match by amount and your unique reference below. You’ll get updates here.</div>'
+  +     copyRow("Order",o.id,o.id)
+  +     + copyRow("Unique reference",o.uniqueRef,o.uniqueRef)
+  +   '</div>'
+  +   '<div class="box">'
+  +     '<div class="title" style="font-size:16px">Summary</div>'
+  +     lines
+  +     '<div class="hr"></div>'
+  +     '<div class="row-between"><div class="muted">Subtotal</div><div class="mono">'+£(o.subtotal)+'</div></div>'
+  +     '<div class="row-between"><div class="muted">Shipping</div><div class="mono">'+£(o.shipping)+'</div></div>'
+  +     '<div class="row-between" style="margin-top:8px"><div>Total</div><div class="mono" style="font-weight:700">'+£(o.total)+'</div></div>'
+  +   '</div>'
+  +   '<div class="box"><div class="help">Need anything else?</div>'
+  +     '<div class="row" style="gap:8px">'
+  +       '<a class="btn grow" href="#" onclick="go(\'home\')">Continue shopping</a>'
+  +       '<a class="btn grow" href="'+SUPPORT_LINK+'">Message about this order</a>'
+  +     '</div>'
+  +   '</div>'
+  + '</div>';
+  hideMain();
+  updateCartBar();
+}
+
+/* ====== RETURNS PAGE ====== */
+function renderReturns(app){
+  setBack(true, ()=> go("home"));
+  app.innerHTML = ''
+  + '<header><div class="row"><div class="title">Returns & Delivery</div><div class="grow"></div></div></header>'
+  + '<div class="section"><div class="box">'
+  + '<p>Returns within <b>30 days</b> in original condition. Email receipts are required.</p>'
+  + '<p>To start a return, message us: <a class="link" href="'+SUPPORT_LINK+'">Open chat</a> and include your order ID.</p>'
+  + '<p>Delivery: Standard 2–4 business days; Express 1–2 business days.</p>'
+  + '</div></div>';
+  hideMain();
+}
+
+/* ====== INIT ====== */
+(function init(){
+  tg.ready?.();
+  tg.expand?.();
+  go("home");
+})();
+</script>
+</body>
+</html>
