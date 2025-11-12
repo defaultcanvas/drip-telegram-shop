@@ -7,10 +7,10 @@
   <script src="https://tg.dev/js/telegram-web-app.js?7"></script>
   <style>
     :root{
-      /* Dark (default) */
-      --bg:#0b0c10; --card:#0f1519; --stroke:rgba(255,255,255,.08);
-      --text:#eef2f7; --muted:#9aa3af; --brand:#7c5cff; --brand2:#2ea6ff;
-      --danger:#ef4444; --ok:#10b981; --r:18px; --shadow:0 16px 40px rgba(0,0,0,.35);
+      /* Dark (default) — luxury palette */
+      --bg:#05060a; --card:#0b0d13; --stroke:rgba(255,255,255,.06);
+      --text:#eef2f7; --muted:#868fa0; --brand:#1c2d4f; --brand2:#d4af37;
+      --danger:#ef4444; --ok:#10b981; --r:18px; --shadow:0 12px 30px rgba(0,0,0,.45);
       /* motion */
       --motion-fast:160ms; --motion-medium:200ms;
     }
@@ -24,10 +24,8 @@
     html,body{height:100%}
     body{
       margin:0;color:var(--text);font-family:ui-sans-serif,system-ui,Segoe UI,Inter,Arial;
-      background:
-        radial-gradient(1200px 600px at 50% -10%,rgba(124,92,255,.25),transparent 60%),
-        radial-gradient(900px 500px at 110% 10%,rgba(46,166,255,.18),transparent 55%),
-        var(--bg);
+      /* mostly solid background with a subtle vignette */
+      background: linear-gradient(180deg, rgba(0,0,0,0.06), transparent), var(--bg);
     }
     .app{max-width:760px;margin:0 auto;padding:12px 12px 96px}
     header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(11,12,16,.95),rgba(11,12,16,.6) 60%,transparent);backdrop-filter:blur(8px);padding:10px 8px 6px}
@@ -38,9 +36,7 @@
     .tab{padding:8px 12px;border:1px solid var(--stroke);border-radius:999px;background:rgba(255,255,255,.03);white-space:nowrap;font-size:14px}
     .tab.active{border-color:rgba(124,92,255,.6);background:linear-gradient(90deg,rgba(124,92,255,.18),rgba(46,166,255,.18))}
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .card{background:var(--card);border:1px solid var(--stroke);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);transition:transform var(--motion-fast) ease,box-shadow var(--motion-fast) ease,opacity var(--motion-fast) ease}
-  .card:hover{transform:translateY(-6px) scale(1.03)}
-  .card:active{transform:scale(0.99)}
+  .card{background:var(--card);border:1px solid var(--stroke);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);transition:box-shadow var(--motion-fast) ease,opacity var(--motion-fast) ease}
   .img{aspect-ratio:4/5;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));display:block;width:100%;object-fit:cover}
   .img.hidden{opacity:0;transform:scale(1.02);transition:opacity var(--motion-fast) ease,transform var(--motion-fast) ease}
   .img:not(.hidden){opacity:1;transform:none}
@@ -86,33 +82,11 @@
     .hr{height:1px;background:var(--stroke);margin:10px 0}
     .help{font-size:12px;color:var(--muted);margin-top:6px}
 
-    /* HERO */
-    .hero{position:relative;border-radius:24px;overflow:hidden;padding:18px;border:1px solid var(--stroke);background:
-      linear-gradient(135deg,rgba(124,92,255,.18),rgba(46,166,255,.14) 60%,rgba(255,255,255,.05));
-      box-shadow:0 20px 60px rgba(0,0,0,.35)}
-    .hero-inner{display:flex;gap:14px;align-items:center}
-    .hero-copy{flex:1}
-    .hero-h1{font-size:22px;line-height:1.2;font-weight:900;letter-spacing:.2px}
-    /* clamp headline to 2 lines on small screens */
-  .hero-h1.clamp{display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .hero-sub{color:#cdd5e1;margin-top:6px;font-size:13.5px}
-    .hero-cta{display:flex;gap:8px;margin-top:12px}
-    .hero-img{width:46%;min-width:46%;aspect-ratio:5/4;border-radius:16px;overflow:hidden;border:1px solid var(--stroke);background:#111822}
-    .hero-img img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.05);transition:opacity var(--motion-fast) ease,transform var(--motion-fast) ease}
-
-    /* responsive: stack hero on small screens and let height auto-size */
-    @media (max-width:720px){
-      .hero-inner{flex-direction:column-reverse;align-items:stretch}
-      .hero-img{width:100%;min-width:100%;aspect-ratio:auto;height:auto}
-      .hero-h1{font-size:20px}
-  .hero-h1.clamp{-webkit-line-clamp:3;line-clamp:3}
-    }
+    /* Hero removed for a minimal home layout */
 
     /* SEARCH */
     .search{display:flex;gap:8px;margin-top:12px}
     .search input{flex:1;border-radius:12px}
-    /* sticky search under header */
-    .search-sticky{position:sticky;top:56px;z-index:28;padding:10px 0;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.02));}
     .filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
     .filter-chip{padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);background:transparent;color:var(--muted);cursor:pointer}
     .filter-chip.active{background:linear-gradient(90deg,rgba(124,92,255,.12),rgba(46,166,255,.12));color:var(--text);border-color:rgba(124,92,255,.28)}
@@ -123,11 +97,16 @@
     .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
     .trust .t{display:flex;gap:8px;align-items:center;border:1px solid var(--stroke);border-radius:12px;padding:10px;background:rgba(255,255,255,.03);font-size:12.5px}
 
-    /* MARQUEE */
-    .marquee{display:flex;gap:22px;overflow:auto;white-space:nowrap;margin:10px 0 2px;color:#cbd5e1;font-size:12px;letter-spacing:.3px}
-    .marquee .dot{opacity:.4;margin:0 4px}
-
       .recently{display:flex;gap:12px;overflow:auto;margin-top:12px;padding:6px 2px}
+
+    /* logo + category chips */
+    .logo{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;background:var(--brand2);color:var(--brand);font-size:12px;border:1px solid rgba(255,255,255,0.04)}
+    .cat-row{display:flex;gap:8px;overflow:auto;margin-top:12px}
+    .cat-chip{padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);background:transparent;color:var(--muted);font-size:13px;cursor:pointer}
+    .cat-chip.active{background:var(--brand);border-color:var(--brand2);color:var(--text)}
+    .sub-row{display:flex;gap:8px;overflow:auto;margin-top:8px}
+    .sub-chip{padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);background:transparent;color:var(--muted);font-size:12px;cursor:pointer}
+    .sub-chip.active{background:var(--brand);border-color:var(--brand2);color:var(--text)}
     /* compact card for recently viewed */
     .compact-card{background:transparent;border-radius:10px;padding:6px}
     /* size swatches */
@@ -201,14 +180,21 @@ const SUPPORT_LINK = "tg://resolve?domain=YOUR_BOT_USERNAME&start=help";
 const PLACEHOLDER_IMG = 'https://via.placeholder.com/900x1200?text=Image+unavailable&bg=efefef&fg=444';
 
 /* ====== DATA ====== */
-const CATEGORIES = ["Men","Women","Fragrance","Electronics"];
+const CATEGORIES = ["Men","Women","Kids","Accessories","Electronics"];
+const SUBCATEGORIES = {
+  Men: ["All","Hoodies","T-Shirts","Jumpers","Tracksuits"],
+  Women: ["All","Tops","Dresses","Bottoms","Footwear"],
+  Kids: ["All","Sets","Hoodies","T-Shirts","Trainers"],
+  Accessories: ["All","Bags","Caps","Wallets","Belts"],
+  Electronics: ["All","Audio","Wearables","Phone Accessories"]
+};
 const PRODUCTS = [
-  {id:"g1",cat:"Men",brand:"Nike",name:"Tech Fleece Hoodie",price:89.99,stock:3,sizes:["S","M","L"],img:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop"},
-  {id:"g2",cat:"Men",brand:"Jordan",name:"Jumpman Tee",price:34.99,stock:12,sizes:["S","M","L","XL"],img:"https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1200&auto=format&fit=crop"},
-  {id:"g3",cat:"Women",brand:"Adidas",name:"3-Stripes Leggings",price:29.99,stock:2,sizes:["XS","S","M"],img:"https://images.unsplash.com/photo-1542293787938-c9e299b88054?q=80&w=1200&auto=format&fit=crop"},
-  {id:"g4",cat:"Fragrance",brand:"Dior",name:"Sauvage 100 ml",price:84.00,stock:6,sizes:["100ml"],img:"https://images.unsplash.com/photo-1563170423-18f482d82cc8?q=80&w=1200&auto=format&fit=crop"},
-  {id:"g5",cat:"Electronics",brand:"Apple",name:"AirPods Pro (2nd Gen)",price:199.00,stock:5,sizes:["—"],img:"https://images.unsplash.com/photo-1606229365485-93a3b8ee038e?q=80&w=1200&auto=format&fit=crop"},
-  {id:"g6",cat:"Men",brand:"The North Face",name:"1996 Nuptse",price:249.00,stock:1,sizes:["M","L"],img:"https://images.unsplash.com/photo-1548883354-7622d03acae1?q=80&w=1200&auto=format&fit=crop"}
+  {id:"g1",cat:"Men",type:"Hoodies",brand:"Nike",name:"Tech Fleece Hoodie",price:89.99,stock:3,sizes:["S","M","L"],img:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g2",cat:"Men",type:"T-Shirts",brand:"Jordan",name:"Jumpman Tee",price:34.99,stock:12,sizes:["S","M","L","XL"],img:"https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g3",cat:"Women",type:"Bottoms",brand:"Adidas",name:"3-Stripes Leggings",price:29.99,stock:2,sizes:["XS","S","M"],img:"https://images.unsplash.com/photo-1542293787938-c9e299b88054?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g4",cat:"Accessories",type:"Fragrances",brand:"Dior",name:"Sauvage 100 ml",price:84.00,stock:6,sizes:["100ml"],img:"https://images.unsplash.com/photo-1563170423-18f482d82cc8?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g5",cat:"Electronics",type:"Audio",brand:"Apple",name:"AirPods Pro (2nd Gen)",price:199.00,stock:5,sizes:["—"],img:"https://images.unsplash.com/photo-1606229365485-93a3b8ee038e?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g6",cat:"Men",type:"Jackets",brand:"The North Face",name:"1996 Nuptse",price:249.00,stock:1,sizes:["M","L"],img:"https://images.unsplash.com/photo-1548883354-7622d03acae1?q=80&w=1200&auto=format&fit=crop"}
 ];
 // FEATURED removed — no longer used in the UI
 
@@ -222,8 +208,6 @@ const state = {
   hold:null,
   user:{ email:"", phone:"", name:"", address:"", city:"", postcode:"", country:"United Kingdom" },
   filters: { size: null, under100: false, inStock: false },
-  visibleCount: 8,
-  visibleStep: 6,
   observer: null,
   order:null
 };
@@ -292,15 +276,14 @@ function initUIAfterRender(){
   try{
     const q = document.getElementById('q');
     if(q){
-      q.oninput = debounce(function(ev){ state.query = this.value; state.visibleCount = 8; render(); },150);
-      const clear = document.getElementById('clearSearch'); if(clear) clear.onclick = ()=>{ state.query=''; (document.getElementById('q')||{}).value=''; state.visibleCount=8; render(); };
+      q.oninput = debounce(function(ev){ state.query = this.value; render(); },150);
+      const clear = document.getElementById('clearSearch'); if(clear) clear.onclick = ()=>{ state.query=''; (document.getElementById('q')||{}).value=''; render(); };
     }
-    const fs = document.getElementById('filterSize'); if(fs){ fs.onchange = ()=>{ state.filters.size = fs.value||null; state.visibleCount=8; render(); } }
-    const fu = document.getElementById('filterUnder100'); if(fu){ fu.onclick = ()=>{ state.filters.under100 = !state.filters.under100; fu.classList.toggle('active', state.filters.under100); state.visibleCount=8; render(); } }
-    const fi = document.getElementById('filterInStock'); if(fi){ fi.onclick = ()=>{ state.filters.inStock = !state.filters.inStock; fi.classList.toggle('active', state.filters.inStock); state.visibleCount=8; render(); } }
+    const fs = document.getElementById('filterSize'); if(fs){ fs.onchange = ()=>{ state.filters.size = fs.value||null; render(); } }
+    const fu = document.getElementById('filterUnder100'); if(fu){ fu.onclick = ()=>{ state.filters.under100 = !state.filters.under100; fu.classList.toggle('active', state.filters.under100); render(); } }
+    const fi = document.getElementById('filterInStock'); if(fi){ fi.onclick = ()=>{ state.filters.inStock = !state.filters.inStock; fi.classList.toggle('active', state.filters.inStock); render(); } }
   }catch(e){console.warn('initUI filters',e)}
-  // setup infinite scroll sentinel observer
-  try{ setupObserver(); }catch(e){}
+  // infinite scroll removed for simpler home
 }
 
 // Promo and address book helpers
@@ -363,18 +346,7 @@ function debounce(fn, wait){ let t; return (...args)=>{ clearTimeout(t); t=setTi
 function getRecent(){ try{ return load('recentViews', []); }catch(e){ return []; } }
 function addRecent(id){ try{ const list = getRecent().filter(x=>x!==id); list.unshift(id); while(list.length>8) list.pop(); save('recentViews', list); }catch(e){} }
 
-// IntersectionObserver for infinite scroll sentinel
-function setupObserver(){
-  try{
-    if(state.observer) state.observer.disconnect();
-    const sentinel = document.getElementById('loadSentinel');
-    if(!sentinel) return;
-    state.observer = new IntersectionObserver(entries=>{
-      entries.forEach(en=>{ if(en.isIntersecting){ state.visibleCount += state.visibleStep; render(); } });
-    },{root:null,rootMargin:'200px',threshold:0.1});
-    state.observer.observe(sentinel);
-  }catch(e){console.warn('observer err',e)}
-}
+// infinite scroll removed (single-screen home)
 
 // image helpers for lazy images with skeletons
 function onImageLoad(img){
@@ -471,12 +443,10 @@ function productCard(p, opts={}){
       <div class="pad">
         <div class="brand">${p.brand}</div>
         <div class="name">${p.name}</div>
-        <div class="swatches" aria-hidden="true">${(p.sizes||[]).slice(0,3).map(s=>`<span class="swatch ${p.stock>0? '':'disabled'}">${s}</span>`).join('')}</div>
         <div class="row-between">
           <div class="price">${pound(p.price)}</div>
           ${p.stock<=3?`<div class="low mono">Only ${p.stock} left</div>`:""}
         </div>
-        <div class="stock-meter-wrap"><div class="stock-meter" style="width:${Math.min(100, (p.stock||0)*10)}%"></div><div class="stock-label">${p.stock>3? 'In stock':'Low stock'}</div></div>
       </div>
     </article>
   `;
@@ -527,116 +497,47 @@ function render(){
 
 function renderHome(app){
   setBack(false);
-
-  // Filter by tab + query + filters
-  const q = state.query.trim().toLowerCase();
-  let listAll = PRODUCTS.filter(p=>p.cat===state.tab && (!q || (p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q))));
-  // apply filters
-  if(state.filters.size){ listAll = listAll.filter(p=>p.sizes && p.sizes.includes(state.filters.size)); }
-  if(state.filters.under100){ listAll = listAll.filter(p=>p.price < 100); }
+  // determine available categories (stock-aware)
+  const activeCategories = CATEGORIES.filter(c=> PRODUCTS.some(p=>p.cat===c && p.stock>0));
+  if(!activeCategories.includes(state.tab)) state.tab = activeCategories[0] || CATEGORIES[0];
+  // build filtered product list: category -> subcategory -> query -> inStock
+  const q = (state.query||"").trim().toLowerCase();
+  let listAll = PRODUCTS.filter(p=>p.cat===state.tab && p.stock>0);
+  if(state.subTab && state.subTab !== 'All'){ listAll = listAll.filter(p=> (p.type||'').toLowerCase() === state.subTab.toLowerCase()); }
+  if(q){ listAll = listAll.filter(p=> (p.name||'').toLowerCase().includes(q) || (p.brand||'').toLowerCase().includes(q)); }
   if(state.filters.inStock){ listAll = listAll.filter(p=>p.stock>0); }
-  const totalMatches = listAll.length;
-  const list = listAll.slice(0, state.visibleCount);
 
-  // Tabs
-  const tabs = CATEGORIES.map(c=>`<button class="tab ${c===state.tab?"active":""}" onclick="state.tab='${c}';render()">${c}</button>`).join("");
+  // category chips
+  const cats = activeCategories.map(c=>`<button class="cat-chip ${c===state.tab? 'active':''}" onclick="(function(){ state.tab='${c}'; state.subTab='All'; render(); })()">${c}</button>`).join('');
+  // subcategory chips for active tab
+  const subs = (SUBCATEGORIES[state.tab]||['All']).filter(s=>{
+    if(s==='All') return true;
+    return PRODUCTS.some(p=>p.cat===state.tab && (p.type||'')===s && p.stock>0);
+  }).map(s=>`<button class="sub-chip ${state.subTab===s? 'active':''}" onclick="(function(){ state.subTab='${s}'; render(); })()">${s}</button>`).join('');
 
-  // Cards (skeleton + lazy srcset)
-  const grid = list.map(p=>productCard(p)).join("");
-
-  // Featured strip removed to simplify home layout
+  const grid = listAll.map(p=>productCard(p)).join('') || `<div class="muted" style="grid-column:1/-1">No items match “${state.query}”.</div>`;
 
   app.innerHTML = `
     <header>
       <div class="row">
-        <div class="title">Drip Club</div>
+        <div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div>
         <div class="grow"></div>
         <div style="display:flex;gap:8px;align-items:center">
-          ${orderBadge()}
-          <button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button>
           <a class="link" href="${SUPPORT_LINK}">Support</a>
         </div>
       </div>
-      <div class="marquee">
-        Nike <span class="dot">•</span> Jordan <span class="dot">•</span> Adidas <span class="dot">•</span> Dior <span class="dot">•</span> Apple
-      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--muted);display:flex;gap:12px;align-items:center">✅ Verified stock · ↩ 30-day returns · 💬 Telegram support</div>
     </header>
 
     <div class="section">
-      <!-- STICKY SEARCH + FILTERS -->
-      <div id="searchbar" class="search-sticky">
-        <div class="search" style="max-width:760px;margin:0 auto;display:flex;gap:8px;">
-          <input id="q" placeholder="Search brand or item…" value="${state.query||""}" />
-          <button class="btn" id="clearSearch">Clear</button>
-        </div>
-        <div style="max-width:760px;margin:6px auto 0">
-          <div class="filters">
-            <select id="filterSize" style="border-radius:12px;padding:8px;border:1px solid var(--stroke);background:transparent;color:var(--text)">
-              <option value="">Size</option>
-              ${[...new Set(PRODUCTS.filter(p=>p.cat===state.tab).flatMap(p=>p.sizes||[]))].map(s=>`<option ${state.filters.size===s?"selected":""} value="${s}">${s}</option>`).join('')}
-            </select>
-            <button id="filterUnder100" class="filter-chip ${state.filters.under100?"active":""}">Under £100</button>
-            <button id="filterInStock" class="filter-chip ${state.filters.inStock?"active":""}">In stock</button>
-          </div>
-        </div>
-      </div>
-      <!-- HERO -->
-      <div class="hero">
-        <div class="hero-inner">
-          <div class="hero-copy">
-            <div class="pill mono">New drops live</div>
-            <div class="hero-h1 clamp">Premium pieces. Fast checkout. In Telegram.</div>
-            <div class="hero-sub">Authenticity-first curation. 30-day returns. Live chat support.</div>
-            <div class="hero-cta">
-              <button class="btn" onclick="state.tab='Men';render()">Shop Men</button>
-              <button class="btn" onclick="state.tab='Women';render()">Shop Women</button>
-              <button class="btn" onclick="state.tab='Fragrance';render()">Fragrance</button>
-            </div>
+      <div class="cat-row">${cats}</div>
+      <div class="sub-row">${subs}</div>
+      <div style="margin-top:10px;display:flex;gap:8px"><input id="q" placeholder="Search brand or item…" value="${state.query||''}" style="flex:1" /><button class="btn" id="clearSearch">Clear</button></div>
 
-            <div class="search">
-              <input id="q" placeholder="Search brand or item…" value="${state.query||""}" oninput="state.query=this.value;render()"/>
-              <button class="btn" onclick="state.query='';document.getElementById('q').value='';render()">Clear</button>
-            </div>
-
-            <div class="chipbar">
-              <div class="chip" onclick="state.query='hoodie';render()">Hoodies</div>
-              <div class="chip" onclick="state.query='tee';render()">Tees</div>
-              <div class="chip" onclick="state.query='100 ml';render()">100 ml</div>
-              <div class="chip" onclick="state.query='airpods';render()">AirPods</div>
-            </div>
-
-            <div class="trust">
-              <div class="t">🏦 Bank transfer accepted</div>
-              <div class="t">🔒 TLS secure</div>
-              <div class="t">↩️ 30-day returns</div>
-            </div>
-          </div>
-          <div class="hero-img">
-            <div style="width:100%;height:100%;position:relative"><div class="skeleton"></div>
-              <img class="img hidden" src="https://images.unsplash.com/photo-1543076447-215ad9ba6923?q=80&w=1200&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1543076447-215ad9ba6923?q=80&w=600&auto=format&fit=crop 600w, https://images.unsplash.com/photo-1543076447-215ad9ba6923?q=80&w=900&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1543076447-215ad9ba6923?q=80&w=1200&auto=format&fit=crop 1200w" sizes="(max-width:720px) 100vw, 420px" loading="lazy" onload="onImageLoad(this)" onerror="onImageError(this)" alt="Hero"/>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RECENTLY VIEWED -->
-      <div id="recently" class="recently">
-      ${getRecent().map(id=>{const p=PRODUCTS.find(x=>x.id===id); return p?`<div style="min-width:140px;max-width:160px;cursor:pointer" onclick="go('pdp',{id:'${p.id}'})"><div class="card" style="padding:8px"><div style="height:90px;overflow:hidden;border-radius:8px"><img class="img hidden" src="${p.img}" srcset="${p.img}&w=400 400w, ${p.img}&w=800 800w" sizes="140px" loading="lazy" onload="onImageLoad(this)" onerror="onImageError(this)" alt="${p.name}"/></div><div style="margin-top:8px"><div class="name" style="font-size:13px">${p.name}</div><div class="muted mono" style="font-size:12px">${pound(p.price)}</div></div></div></div>`:""}).join('')}
-      </div>
-
-      <!-- TABS -->
-      <div class="tabs" style="margin-top:12px">${tabs}</div>
-
-      <!-- GRID -->
-      <div class="grid" style="margin-top:10px">
-        ${grid.length?grid:`<div class="muted" style="grid-column:1/-1">No items match “${state.query}”.</div>`}
-        <div id="loadSentinel" style="grid-column:1/-1;height:10px"></div>
-      </div>
-      ${ totalMatches> (state.visibleCount-state.visibleStep) ? `<div class="muted" style="text-align:center;margin-top:10px">Loading more…</div>` : ''}
+      <div class="grid" style="margin-top:12px">${grid}</div>
 
       <div class="help" style="margin-top:10px">Returns & Delivery → <a class="link" href="#" onclick="go('returns')">Read policy</a></div>
-    </div>
-  `;
+    </div>`;
 
   updateCartBar();
   if(state.cart.length>0){ setMainButton(`Checkout — ${pound(sum(state.cart))}`, ()=> go("checkout")); } else hideMain();
@@ -649,7 +550,7 @@ function renderPDP(app,id){
   try{ addRecent(p.id); }catch(e){}
   const sel=(p.sizes&&p.sizes.length?p.sizes[0]:"—");
   app.innerHTML=
-    `<header><div class="row"><div class="title">${p.brand}</div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
+    `<header><div class="row"><div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
     <div class="section">
       <div class="box">
         <div class="gallery" style="position:relative;overflow:hidden;aspect-ratio:4/5;margin-bottom:10px">
@@ -723,7 +624,7 @@ function renderCheckout(app){
   const left=Math.max(0,Math.floor((state.hold.expiresAt-Date.now())/1000));
   const ref=state.order?.uniqueRef??uniqueRef();
   app.innerHTML=`
-    <header><div class="row"><div class="title">Checkout</div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
+    <header><div class="row"><div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
     <div class="section">
       <div class="box">
         <div class="row-between"><div class="title">Your bag</div><a class="link" href="#" onclick="go('home')">Add more</a></div>
@@ -778,7 +679,7 @@ function renderConfirm(app){
   setBack(false);
   const o=state.order??load("lastOrder",null); if(!o){go("home");return}
   app.innerHTML=`
-    <header><div class="row"><div class="title">Order placed</div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
+    <header><div class="row"><div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button><a class="link" href="${SUPPORT_LINK}">Support</a></div></div></header>
     <div class="section">
       <div class="box">
         <div class="row-between"><div class="title" style="font-size:16px">Thanks — we’ll verify your transfer</div><div class="pill">Under review</div></div>
@@ -809,7 +710,7 @@ function renderConfirm(app){
 function renderReturns(app){
   setBack(true,()=>go("home"));
   app.innerHTML=`
-    <header><div class="row"><div class="title">Returns & Delivery</div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button></div></div></header>
+    <header><div class="row"><div style="display:flex;align-items:center;gap:8px"><div class="logo">DC</div><div class="title">Drip Club</div></div><div class="grow"></div><div style="display:flex;gap:8px;align-items:center">${orderBadge()}<button id="themeToggle" class="btn secondary" onclick="toggleTheme()">Theme</button></div></div></header>
     <div class="section"><div class="box">
       <p>Returns within <b>30 days</b> in original condition. Email receipts are required.</p>
       <p>To start a return, message us: <a class="link" href="${SUPPORT_LINK}">Open chat</a> and include your order ID.</p>
@@ -973,7 +874,7 @@ async function placeOrder(total,ref){
 (function init(){ tg.ready?.(); tg.expand?.(); try{ applyThemeFromTelegram(); }catch(e){}; go("home");
   // defer non-critical, heavier UI setup to idle time to avoid blocking render
   const idle = window.requestIdleCallback || function(cb){ return setTimeout(cb, 200); };
-  idle(()=>{ try{ createChatPill(); setupObserver(); }catch(e){console.warn('idle init',e)} });
+  idle(()=>{ try{ createChatPill(); }catch(e){console.warn('idle init',e)} });
 })();
 </script>
 </body>
