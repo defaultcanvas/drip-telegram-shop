@@ -182,17 +182,17 @@ const PLACEHOLDER_IMG = 'https://via.placeholder.com/900x1200?text=Image+unavail
 /* ====== DATA ====== */
 const CATEGORIES = ["Men","Women","Kids","Accessories","Electronics"];
 const SUBCATEGORIES = {
-  Men: ["All","Hoodies","T-Shirts","Jumpers","Tracksuits"],
+  Men: ["All","Hoodies","T-Shirts","Jumpers","Tracksuits","Jackets"],
   Women: ["All","Tops","Dresses","Bottoms","Footwear"],
   Kids: ["All","Sets","Hoodies","T-Shirts","Trainers"],
-  Accessories: ["All","Bags","Caps","Wallets","Belts"],
+  Accessories: ["All","Bags","Caps","Wallets","Belts","Fragrance"],
   Electronics: ["All","Audio","Wearables","Phone Accessories"]
 };
 const PRODUCTS = [
   {id:"g1",cat:"Men",type:"Hoodies",brand:"Nike",name:"Tech Fleece Hoodie",price:89.99,stock:3,sizes:["S","M","L"],img:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop"},
   {id:"g2",cat:"Men",type:"T-Shirts",brand:"Jordan",name:"Jumpman Tee",price:34.99,stock:12,sizes:["S","M","L","XL"],img:"https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1200&auto=format&fit=crop"},
   {id:"g3",cat:"Women",type:"Bottoms",brand:"Adidas",name:"3-Stripes Leggings",price:29.99,stock:2,sizes:["XS","S","M"],img:"https://images.unsplash.com/photo-1542293787938-c9e299b88054?q=80&w=1200&auto=format&fit=crop"},
-  {id:"g4",cat:"Accessories",type:"Fragrances",brand:"Dior",name:"Sauvage 100 ml",price:84.00,stock:6,sizes:["100ml"],img:"https://images.unsplash.com/photo-1563170423-18f482d82cc8?q=80&w=1200&auto=format&fit=crop"},
+  {id:"g4",cat:"Accessories",type:"Fragrance",brand:"Dior",name:"Sauvage 100 ml",price:84.00,stock:6,sizes:["100ml"],img:"https://images.unsplash.com/photo-1563170423-18f482d82cc8?q=80&w=1200&auto=format&fit=crop"},
   {id:"g5",cat:"Electronics",type:"Audio",brand:"Apple",name:"AirPods Pro (2nd Gen)",price:199.00,stock:5,sizes:["—"],img:"https://images.unsplash.com/photo-1606229365485-93a3b8ee038e?q=80&w=1200&auto=format&fit=crop"},
   {id:"g6",cat:"Men",type:"Jackets",brand:"The North Face",name:"1996 Nuptse",price:249.00,stock:1,sizes:["M","L"],img:"https://images.unsplash.com/photo-1548883354-7622d03acae1?q=80&w=1200&auto=format&fit=crop"}
 ];
@@ -208,6 +208,7 @@ const state = {
   hold:null,
   user:{ email:"", phone:"", name:"", address:"", city:"", postcode:"", country:"United Kingdom" },
   filters: { size: null, under100: false, inStock: false },
+  subTab: 'All',
   observer: null,
   order:null
 };
