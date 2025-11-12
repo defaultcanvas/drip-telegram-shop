@@ -10,6 +10,8 @@ export default async function handler(req, res) {
     });
     if (!r.ok) return res.status(500).json({ ok:false, error: await r.text() });
     const data = await r.json();
+    // Cache for CDN/edge: allow short s-maxage and stale-while-revalidate
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
     return res.status(200).json({ ok:true, orders: data });
   } catch (e) {
     return res.status(500).json({ ok:false, error:String(e) });
