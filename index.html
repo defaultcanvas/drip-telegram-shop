@@ -127,12 +127,7 @@
     .marquee{display:flex;gap:22px;overflow:auto;white-space:nowrap;margin:10px 0 2px;color:#cbd5e1;font-size:12px;letter-spacing:.3px}
     .marquee .dot{opacity:.4;margin:0 4px}
 
-    /* FEATURED STRIP */
-    .featured{display:flex;gap:10px;overflow:auto;margin-top:12px}
-    .recently{display:flex;gap:12px;overflow:auto;margin-top:12px;padding:6px 2px}
-    .feat{min-width:58%;background:var(--card);border:1px solid var(--stroke);border-radius:16px;overflow:hidden}
-    .feat img{width:100%;height:140px;object-fit:cover;display:block}
-    .feat .pad{padding:10px}
+      .recently{display:flex;gap:12px;overflow:auto;margin-top:12px;padding:6px 2px}
     /* compact card for recently viewed */
     .compact-card{background:transparent;border-radius:10px;padding:6px}
     /* size swatches */
@@ -158,6 +153,13 @@
     #cartDrawer .item .meta{flex:1}
     #holdFooter{font-size:12px;color:var(--muted);margin-left:12px}
   </style>
+  <!-- Preload first 6 product images for LCP/perf -->
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1200&auto=format&fit=crop">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1542293787938-c9e299b88054?q=80&w=1200&auto=format&fit=crop">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1563170423-18f482d82cc8?q=80&w=1200&auto=format&fit=crop">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1606229365485-93a3b8ee038e?q=80&w=1200&auto=format&fit=crop">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1548883354-7622d03acae1?q=80&w=1200&auto=format&fit=crop">
 </head>
 <body>
   <div class="app" id="app"></div>
@@ -208,10 +210,7 @@ const PRODUCTS = [
   {id:"g5",cat:"Electronics",brand:"Apple",name:"AirPods Pro (2nd Gen)",price:199.00,stock:5,sizes:["—"],img:"https://images.unsplash.com/photo-1606229365485-93a3b8ee038e?q=80&w=1200&auto=format&fit=crop"},
   {id:"g6",cat:"Men",brand:"The North Face",name:"1996 Nuptse",price:249.00,stock:1,sizes:["M","L"],img:"https://images.unsplash.com/photo-1548883354-7622d03acae1?q=80&w=1200&auto=format&fit=crop"}
 ];
-const FEATURED = [
-  {img:"https://images.unsplash.com/photo-1520975922284-5c0d3a88d2c8?q=80&w=1200&auto=format&fit=crop", title:"Winter Essentials", sub:"Puffer, fleece & layers", tab:"Men"},
-  {img:"https://images.unsplash.com/photo-1521577352947-9bb58764b69a?q=80&w=1200&auto=format&fit=crop", title:"Smell Iconic", sub:"Bestselling fragrances", tab:"Fragrance"}
-];
+// FEATURED removed — no longer used in the UI
 
 /* ====== STATE ====== */
 const tg = window.Telegram?.WebApp ?? {MainButton:{},BackButton:{},HapticFeedback:{}};
@@ -231,6 +230,11 @@ const state = {
 
 /* ====== HELPERS ====== */
 const el = s => document.querySelector(s);
+// Polyfill requestAnimationFrame for non-browser environments (jsdom/node)
+if(typeof requestAnimationFrame === 'undefined'){
+  globalThis.requestAnimationFrame = (cb)=> setTimeout(()=>cb(Date.now()), 16);
+  globalThis.cancelAnimationFrame = (id)=> clearTimeout(id);
+}
 const pound = n => "£"+(n.toFixed(2));
 const sum = xs => xs.reduce((a,b)=>a + b.price*b.qty, 0);
 const uid = (len=6)=>Math.random().toString(36).slice(2,2+len).toUpperCase();
@@ -242,7 +246,17 @@ function copy(t,n){navigator.clipboard.writeText(t).then(()=>{if(n){n.innerText=
 function setMainButton(t,f){tg.MainButton?.show?.();tg.MainButton?.setParams?.({text:t});tg.MainButton?.onClick?.(()=>{});tg.MainButton?.onClick?.(f);}
 function hideMain(){tg.MainButton?.hide?.();}
 function setBack(s,f){if(s){tg.BackButton?.show?.();tg.BackButton?.onClick?.(()=>f?.());}else{tg.BackButton?.hide?.();tg.BackButton?.onClick?.(()=>{});}}
-function updateCartBar(){const items=state.cart.reduce((a,b)=>a+b.qty,0);const total=sum(state.cart);const bar=el("#cartbar");if(items>0){bar.style.display="block";el("#cartbar-left").innerText=`🛒 ${items} item${items>1?"s":""}`;el("#cartbar-right").innerText=pound(total);}else{bar.style.display="none";hideMain();} _updateCartBarRef(); }
+function updateCartBar(){
+  const items = state.cart.reduce((a,b)=>a+b.qty,0);
+  const total = sum(state.cart);
+  const bar = el('#cartbar');
+  // batch DOM writes to avoid layout thrash
+  requestAnimationFrame(()=>{
+    if(items>0){ bar.style.display='block'; el('#cartbar-left').innerText = `🛒 ${items} item${items>1?"s":""}`; el('#cartbar-right').innerText = pound(total); }
+    else { bar.style.display='none'; hideMain(); }
+    _updateCartBarRef();
+  });
+}
 // show order reference (if available) in the cartbar
 function _updateCartBarRef(){ try{ const refEl = el('#cartbar-ref'); if(!refEl) return; const last = state.order?.uniqueRef || load('lastOrder')?.uniqueRef || null; if(last){ refEl.style.display='inline-block'; refEl.innerText = last; } else { refEl.style.display='none'; } }catch(e){} }
 // Make cartbar tappable to open mini drawer
@@ -255,9 +269,18 @@ document.addEventListener('click', (e)=>{
 function openCartDrawer(){ const d = el('#cartDrawer'); if(!d) return; d.classList.add('open'); renderCartDrawer(); }
 function closeCartDrawer(){ const d = el('#cartDrawer'); if(!d) return; d.classList.remove('open'); }
 function renderCartDrawer(){ const body = el('#cartDrawerBody'); const foot = el('#cartDrawerFooter'); if(!body || !foot) return; if(state.cart.length===0){ body.innerHTML='<div class="muted">Your cart is empty.</div>'; foot.innerHTML=''; return; }
+  // write body immediately (mostly static HTML) then batch footer update
   body.innerHTML = state.cart.map((it,idx)=>`<div class="item"><div style="width:64px;height:64px;overflow:hidden;border-radius:8px"><img src='${PRODUCTS.find(p=>p.id===it.id)?.img}' style='width:100%;height:100%;object-fit:cover'/></div><div class="meta"><div class="name">${it.name}</div><div class="muted mono" style="font-size:12px">${it.size} • ${it.qty} × ${pound(it.price)}</div></div><div><div class="mono">${pound(it.price*it.qty)}</div><div style="margin-top:6px"><button class="btn" onclick="incQty(${idx})">+</button> <button class="btn" onclick="decQty(${idx})">−</button></div></div></div>`).join('');
-  const subtotal = sum(state.cart); const shipping = subtotal>=100?0:4.95; const promo = state.promo || {}; const discount = promo.discount||0; const discountAmt = typeof discount==='number' ? +(subtotal*(discount/100)).toFixed(2) : 0; const subAfter = +(subtotal - discountAmt).toFixed(2); const total = +(subAfter + shipping).toFixed(2);
-  foot.innerHTML = `<div class="line"></div><div class="row-between"><div class="muted">Subtotal</div><div class="mono">${pound(subtotal)}</div></div><div class="row-between"><div class="muted">Discount</div><div class="mono">${discountAmt?'-'+pound(discountAmt):'-'}</div></div><div class="row-between"><div class="muted">Shipping</div><div class="mono">${shipping===0?'Free':pound(shipping)}</div></div><div class="hr"></div><div class="row-between"><div class="title">Total</div><div class="mono" style="font-weight:700">${pound(total)}</div></div><div style="margin-top:10px"><button class="btn full" onclick="go('checkout')">Go to checkout</button></div>`;
+  const subtotal = sum(state.cart);
+  const shipping = subtotal>=100?0:4.95;
+  const promo = state.promo || {};
+  const discount = promo.discount||0;
+  const discountAmt = typeof discount==='number' ? +(subtotal*(discount/100)).toFixed(2) : 0;
+  const subAfter = +(subtotal - discountAmt).toFixed(2);
+  const total = +(subAfter + shipping).toFixed(2);
+  requestAnimationFrame(()=>{
+    foot.innerHTML = `<div class="line"></div><div class="row-between"><div class="muted">Subtotal</div><div class="mono">${pound(subtotal)}</div></div><div class="row-between"><div class="muted">Discount</div><div class="mono">${discountAmt?'-'+pound(discountAmt):'-'}</div></div><div class="row-between"><div class="muted">Shipping</div><div class="mono">${shipping===0?'Free':pound(shipping)}</div></div><div class="hr"></div><div class="row-between"><div class="title">Total</div><div class="mono" style="font-weight:700">${pound(total)}</div></div><div style="margin-top:10px"><button class="btn full" onclick="go('checkout')">Go to checkout</button></div>`;
+  });
 }
 
 function initUIAfterRender(){
@@ -521,21 +544,7 @@ function renderHome(app){
   // Cards (skeleton + lazy srcset)
   const grid = list.map(p=>productCard(p)).join("");
 
-  // Featured strip (lazy images)
-  const featured = FEATURED.map(f=>`
-    <div class="feat" onclick="state.tab='${f.tab}';render()">
-      <div style="position:relative;overflow:hidden;height:140px;width:100%"><div class="skeleton"></div><img class="img hidden" src="${f.img}" srcset="${f.img}&w=600 600w, ${f.img}&w=900 900w, ${f.img}&w=1200 1200w" sizes="(max-width:600px) 100vw, 420px" loading="lazy" onload="onImageLoad(this)" onerror="onImageError(this)" alt="${f.title}"/></div>
-      <div class="pad">
-        <div class="row-between">
-          <div>
-            <div class="name" style="font-size:15px">${f.title}</div>
-            <div class="muted" style="font-size:12px">${f.sub}</div>
-          </div>
-          <span class="pill">Shop →</span>
-        </div>
-      </div>
-    </div>
-  `).join("");
+  // Featured strip removed to simplify home layout
 
   app.innerHTML = `
     <header>
@@ -609,9 +618,6 @@ function renderHome(app){
           </div>
         </div>
       </div>
-
-      <!-- FEATURED -->
-      <div class="featured">${featured}</div>
 
       <!-- RECENTLY VIEWED -->
       <div id="recently" class="recently">
@@ -765,6 +771,8 @@ function renderCheckout(app){
     </div>`;
   setMainButton(`${state.promo?state.promo.code+' • ':''}Checkout — ${pound(after)}`,()=>document.querySelector("button.btn.full")?.click());
   updateCartBar(); tickHold(left);
+  // start polling order status if we have an active order
+  try{ if(state.order?.id) pollOrderStatus(state.order.id); else if(load('lastOrder')?.id) pollOrderStatus(load('lastOrder').id); }catch(e){}
 }
 function renderConfirm(app){
   setBack(false);
@@ -775,8 +783,10 @@ function renderConfirm(app){
       <div class="box">
         <div class="row-between"><div class="title" style="font-size:16px">Thanks — we’ll verify your transfer</div><div class="pill">Under review</div></div>
         <div class="help">We match by amount and your unique reference below. You’ll get updates here.</div>
+        <div id="order-status" style="margin-top:8px"></div>
         ${copyRow("Order",o.id,o.id)}
         ${copyRow("Unique reference",o.uniqueRef,o.uniqueRef)}
+        <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="startReturnChat('${o.id}')">Start return</button><a class="btn" href="${_chatPayloadFor('confirm', o.uniqueRef).tgDeep}" target="_blank">Message about this order</a></div>
       </div>
       <div class="box">
         <div class="title" style="font-size:16px">Summary</div>
@@ -839,6 +849,103 @@ function orderBadge(){
     return `<div class="pill mono" style="margin-left:8px">Ref: ${last}</div>`;
   }catch(e){return ''}
 }
+// Chat & returns helpers
+function _chatPayloadFor(route, ref){
+  const bot = 'YOUR_BOT_USERNAME';
+  const payload = `${route}|${ref||''}`;
+  const tgDeep = `tg://resolve?domain=${bot}&start=${encodeURIComponent(payload)}`;
+  const webDeep = `https://t.me/${bot}?start=${encodeURIComponent(payload)}`;
+  const shareText = `Support request\nRoute: ${route}\nRef: ${ref || ''}\n\nDescribe your request here...`;
+  const shareUrl = `https://t.me/share/url?text=${encodeURIComponent(shareText)}`;
+  return {bot, payload, tgDeep, webDeep, shareText, shareUrl};
+}
+
+function createChatPill(){
+  try{
+    if(document.getElementById('chatPill')) return;
+    const pill = document.createElement('a');
+    pill.id = 'chatPill';
+    pill.className = 'chat-pill';
+    pill.style.position = 'fixed';
+    pill.style.right = '12px';
+    pill.style.bottom = '84px';
+    pill.style.zIndex = '220';
+    pill.style.width = '56px';
+    pill.style.height = '56px';
+    pill.style.borderRadius = '999px';
+    pill.style.display = 'flex';
+    pill.style.alignItems = 'center';
+    pill.style.justifyContent = 'center';
+    pill.style.boxShadow = '0 8px 24px rgba(0,0,0,.35)';
+    pill.style.background = 'linear-gradient(180deg,var(--brand),var(--brand2))';
+    pill.style.color = '#fff';
+    pill.style.textDecoration = 'none';
+    pill.style.fontSize = '22px';
+    pill.title = 'Chat to support';
+    const ref = state.order?.uniqueRef || load('lastOrder')?.uniqueRef || '';
+    const route = state.route?.name || 'home';
+    const link = _chatPayloadFor(route, ref);
+    // prefer tg deep link, fallback to web link if protocol not supported
+    pill.href = link.tgDeep;
+    pill.setAttribute('target','_blank');
+    pill.innerHTML = '💬';
+    pill.onclick = function(ev){
+      // attempt to open tg:// if available; browsers will fallback to https
+      try{ haptic('soft'); }catch(e){}
+    };
+    document.body.appendChild(pill);
+  }catch(e){console.warn('chat pill',e)}
+}
+
+function startReturnChat(orderId){
+  try{
+    const tpl = `Return request\nOrder ID: ${orderId}\nReason: \nPhotos: (attach)\n\nPlease advise next steps.`;
+    const share = `https://t.me/share/url?text=${encodeURIComponent(tpl)}`;
+    // also attempt to open bot with payload so bot can capture the return flow
+    const bot = 'YOUR_BOT_USERNAME';
+    const payload = `return|${orderId}`;
+    const botDeep = `tg://resolve?domain=${bot}&start=${encodeURIComponent(payload)}`;
+    // open share URL in a new tab (works cross-platform)
+    window.open(share,'_blank');
+  }catch(e){console.warn('startReturnChat',e)}
+}
+
+// Poll order status from server (or localStorage fallback) and update UI
+let __orderPoll = null;
+function pollOrderStatus(orderId){
+  try{
+    if(!orderId) return;
+    if(__orderPoll) clearInterval(__orderPoll);
+    let attempts = 0;
+    __orderPoll = setInterval(async ()=>{
+      attempts++;
+      // try server endpoint first
+      try{
+        const res = await fetch(`/api/orders/${encodeURIComponent(orderId)}/status`);
+        if(res && res.ok){ const json = await res.json(); if(json && json.status){ state.order = state.order || {}; state.order.status = json.status; state.order.payment = state.order.payment || {}; state.order.payment.status = json.paymentStatus || state.order.payment.status; updateOrderStatusDisplay(state.order); save('lastOrder', state.order); return; } }
+      }catch(e){ /* ignore network */ }
+      // fallback: check localStorage lastOrder
+      try{ const lo = load('lastOrder', null); if(lo && lo.id===orderId){ state.order = lo; updateOrderStatusDisplay(state.order); return; } }catch(e){}
+      // stop after many attempts
+      if(attempts>30){ clearInterval(__orderPoll); __orderPoll=null; }
+    }, 6000);
+  }catch(e){console.warn('pollOrderStatus',e)}
+}
+
+function updateOrderStatusDisplay(order){
+  try{
+    const elStatus = document.getElementById('order-status');
+    if(!elStatus) return;
+    const s = (order?.status || order?.payment?.status || '').toUpperCase();
+    let label = 'Unknown'; let cls = 'muted';
+    if(/AWAITING|PENDING|AWAITING_PAYMENT/.test(s)) { label='Awaiting payment'; cls='low'; }
+    else if(/AWAITING_REVIEW|AWAITING_PROVIDER/.test(s)) { label='Awaiting review'; cls='low'; }
+    else if(/MATCHED|PAID|CONFIRMED/.test(s)) { label='Matched'; cls='ok'; }
+    else if(/SHIPPED|DISPATCHED/.test(s)) { label='Shipped'; cls='ok'; }
+    else if(/CANCELLED|REFUNDED/.test(s)) { label='Cancelled'; cls='danger'; }
+    elStatus.innerHTML = `<div class="row-between"><div class="muted">Status</div><div class="mono ${cls}" style="font-weight:700">${label}</div></div>`;
+  }catch(e){console.warn('updateOrderStatusDisplay',e)}
+}
 function tickHold(seconds){
   function fmt(s){const m=String(Math.floor(s/60)).padStart(2,"0");const ss=String(s%60).padStart(2,"0");return `${m}:${ss}`;}
   const n=el("#hold"); if(!n) return; let s=seconds; n.innerText=fmt(s);
@@ -863,7 +970,11 @@ async function placeOrder(total,ref){
 }
 
 /* ====== INIT ====== */
-(function init(){ tg.ready?.(); tg.expand?.(); try{ applyThemeFromTelegram(); }catch(e){}; go("home"); })();
+(function init(){ tg.ready?.(); tg.expand?.(); try{ applyThemeFromTelegram(); }catch(e){}; go("home");
+  // defer non-critical, heavier UI setup to idle time to avoid blocking render
+  const idle = window.requestIdleCallback || function(cb){ return setTimeout(cb, 200); };
+  idle(()=>{ try{ createChatPill(); setupObserver(); }catch(e){console.warn('idle init',e)} });
+})();
 </script>
 </body>
 </html>
