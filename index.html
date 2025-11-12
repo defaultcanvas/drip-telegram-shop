@@ -13,15 +13,21 @@
     }
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,Segoe UI,Inter,Arial}
+    body{
+      margin:0;color:var(--text);font-family:ui-sans-serif,system-ui,Segoe UI,Inter,Arial;
+      background:
+        radial-gradient(1200px 600px at 50% -10%,rgba(124,92,255,.25),transparent 60%),
+        radial-gradient(900px 500px at 110% 10%,rgba(46,166,255,.18),transparent 55%),
+        var(--bg);
+    }
     .app{max-width:760px;margin:0 auto;padding:12px 12px 96px}
-    header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(11,12,16,.9),rgba(11,12,16,.6) 60%,transparent);backdrop-filter:blur(8px);padding:10px 8px 6px}
+    header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(11,12,16,.95),rgba(11,12,16,.6) 60%,transparent);backdrop-filter:blur(8px);padding:10px 8px 6px}
     .row{display:flex;align-items:center;gap:10px}
     .grow{flex:1}
-    .title{font-weight:700;letter-spacing:.2px}
-    .tabs{display:flex;gap:8px;overflow:auto;padding:6px 2px 10px}
-    .tab{padding:8px 12px;border:1px solid var(--stroke);border-radius:999px;background:rgba(255,255,255,.02);white-space:nowrap;font-size:14px}
-    .tab.active{border-color:rgba(124,92,255,.6);background:linear-gradient(90deg,rgba(124,92,255,.15),rgba(46,166,255,.15))}
+    .title{font-weight:800;letter-spacing:.2px}
+    .tabs{display:flex;gap:8px;overflow:auto;padding:6px 2px 0}
+    .tab{padding:8px 12px;border:1px solid var(--stroke);border-radius:999px;background:rgba(255,255,255,.03);white-space:nowrap;font-size:14px}
+    .tab.active{border-color:rgba(124,92,255,.6);background:linear-gradient(90deg,rgba(124,92,255,.18),rgba(46,166,255,.18))}
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
     .card{background:var(--card);border:1px solid var(--stroke);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
     .img{aspect-ratio:4/5;background:#101620;display:block;width:100%;object-fit:cover}
@@ -45,18 +51,49 @@
     .footerbar{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:8px 12px;background:linear-gradient(0deg,rgba(11,12,16,.98),rgba(11,12,16,.85) 55%,transparent);backdrop-filter:blur(8px)}
     .cartbar{max-width:760px;margin:0 auto;border:1px solid var(--stroke);background:rgba(255,255,255,.03);padding:8px 12px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
     .link{color:#a5b4fc;text-decoration:none}
-    .danger{color:var(--danger)}
-    .ok{color:var(--ok)}
+    .danger{color:var(--danger)} .ok{color:var(--ok)}
     .list{display:flex;flex-direction:column;gap:10px}
-    .line{display:flex;align-items:center;gap:10px}
     .qty{display:flex;gap:8px;align-items:center}
     .qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--stroke);background:#121923;color:var(--text);cursor:pointer}
     .hr{height:1px;background:var(--stroke);margin:10px 0}
     .help{font-size:12px;color:var(--muted);margin-top:6px}
+
+    /* HERO */
+    .hero{position:relative;border-radius:24px;overflow:hidden;padding:18px;border:1px solid var(--stroke);background:
+      linear-gradient(135deg,rgba(124,92,255,.18),rgba(46,166,255,.14) 60%,rgba(255,255,255,.05));
+      box-shadow:0 20px 60px rgba(0,0,0,.35)}
+    .hero-inner{display:flex;gap:14px;align-items:center}
+    .hero-copy{flex:1}
+    .hero-h1{font-size:22px;line-height:1.2;font-weight:900;letter-spacing:.2px}
+    .hero-sub{color:#cdd5e1;margin-top:6px;font-size:13.5px}
+    .hero-cta{display:flex;gap:8px;margin-top:12px}
+    .hero-img{width:46%;min-width:46%;aspect-ratio:5/4;border-radius:16px;overflow:hidden;border:1px solid var(--stroke);background:#111822}
+    .hero-img img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.05)}
+
+    /* SEARCH */
+    .search{display:flex;gap:8px;margin-top:12px}
+    .search input{flex:1;border-radius:12px}
+    .chipbar{display:flex;gap:8px;overflow:auto;margin-top:10px}
+    .chip{font-size:12px;padding:8px 10px;border:1px solid var(--stroke);border-radius:999px;background:rgba(255,255,255,.03)}
+
+    /* TRUST */
+    .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .trust .t{display:flex;gap:8px;align-items:center;border:1px solid var(--stroke);border-radius:12px;padding:10px;background:rgba(255,255,255,.03);font-size:12.5px}
+
+    /* MARQUEE */
+    .marquee{display:flex;gap:22px;overflow:auto;white-space:nowrap;margin:10px 0 2px;color:#cbd5e1;font-size:12px;letter-spacing:.3px}
+    .marquee .dot{opacity:.4;margin:0 4px}
+
+    /* FEATURED STRIP */
+    .featured{display:flex;gap:10px;overflow:auto;margin-top:12px}
+    .feat{min-width:58%;background:var(--card);border:1px solid var(--stroke);border-radius:16px;overflow:hidden}
+    .feat img{width:100%;height:140px;object-fit:cover;display:block}
+    .feat .pad{padding:10px}
   </style>
 </head>
 <body>
   <div class="app" id="app"></div>
+
   <div class="footerbar">
     <div class="cartbar mono" id="cartbar" style="display:none">
       <div id="cartbar-left">🛒 0 items</div>
@@ -66,16 +103,10 @@
 
 <script>
 /* ====== CONFIG ====== */
-const BANK = {
-  payee: "DRIP CLUB LTD",
-  sortCode: "04-00-04",
-  accountNo: "12345678",
-  iban: "GB12BARC04000412345678"
-};
-const SUPPORT_LINK = "tg://resolve?domain=YOUR_BOT_USERNAME&start=help"; // replace
-const RETURNS_LINK = "#returns";
+const BANK = { payee:"DRIP CLUB LTD", sortCode:"04-00-04", accountNo:"12345678", iban:"GB12BARC04000412345678" };
+const SUPPORT_LINK = "tg://resolve?domain=YOUR_BOT_USERNAME&start=help";
 
-/* ====== DATA (seed) ====== */
+/* ====== DATA ====== */
 const CATEGORIES = ["Men","Women","Fragrance","Electronics"];
 const PRODUCTS = [
   {id:"g1",cat:"Men",brand:"Nike",name:"Tech Fleece Hoodie",price:89.99,stock:3,sizes:["S","M","L"],img:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop"},
@@ -85,59 +116,46 @@ const PRODUCTS = [
   {id:"g5",cat:"Electronics",brand:"Apple",name:"AirPods Pro (2nd Gen)",price:199.00,stock:5,sizes:["—"],img:"https://images.unsplash.com/photo-1606229365485-93a3b8ee038e?q=80&w=1200&auto=format&fit=crop"},
   {id:"g6",cat:"Men",brand:"The North Face",name:"1996 Nuptse",price:249.00,stock:1,sizes:["M","L"],img:"https://images.unsplash.com/photo-1548883354-7622d03acae1?q=80&w=1200&auto=format&fit=crop"}
 ];
+const FEATURED = [
+  {img:"https://images.unsplash.com/photo-1520975922284-5c0d3a88d2c8?q=80&w=1200&auto=format&fit=crop", title:"Winter Essentials", sub:"Puffer, fleece & layers", tab:"Men"},
+  {img:"https://images.unsplash.com/photo-1521577352947-9bb58764b69a?q=80&w=1200&auto=format&fit=crop", title:"Smell Iconic", sub:"Bestselling fragrances", tab:"Fragrance"}
+];
 
 /* ====== STATE ====== */
 const tg = window.Telegram?.WebApp ?? {MainButton:{},BackButton:{},HapticFeedback:{}};
 const state = {
   route:{name:"home",params:{}},
   tab:"Men",
+  query:"",
   cart: load("cart", []),
-  hold:null, // {expiresAt}
+  hold:null,
   user:{ email:"", phone:"", name:"", address:"", city:"", postcode:"", country:"United Kingdom" },
   order:null
 };
 
 /* ====== HELPERS ====== */
-const el = sel => document.querySelector(sel);
-const £ = n => "£"+(n.toFixed(2));
-const sum = items => items.reduce((a,b)=>a + b.price*b.qty, 0);
+const el = s => document.querySelector(s);
+const pound = n => "£"+(n.toFixed(2));
+const sum = xs => xs.reduce((a,b)=>a + b.price*b.qty, 0);
 const uid = (len=6)=>Math.random().toString(36).slice(2,2+len).toUpperCase();
 const uniqueRef = ()=>"DRIP-"+new Date().toISOString().slice(2,10).replace(/-/g,"")+"-"+uid(6);
-function save(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
-function load(key,def){ try{ return JSON.parse(localStorage.getItem(key)) ?? def }catch{ return def } }
-function haptic(kind="impact"){ try{ tg.HapticFeedback?.impactOccurred?.(kind) }catch{} }
-function copy(text, node){
-  navigator.clipboard.writeText(text).then(()=>{
-    if(node){ node.innerText="Copied"; setTimeout(()=> node.innerText="Copy", 900); }
-    haptic("soft");
-  });
-}
-function setMainButton(text, onClick){
-  tg.MainButton?.show?.(); tg.MainButton?.setParams?.({text});
-  tg.MainButton?.onClick?.(()=>{}); // clear old
-  tg.MainButton?.onClick?.(onClick);
-}
-function hideMain(){ tg.MainButton?.hide?.(); }
-function setBack(show, handler){
-  if(show){ tg.BackButton?.show?.(); tg.BackButton?.onClick?.(()=>handler?.()); }
-  else { tg.BackButton?.hide?.(); tg.BackButton?.onClick?.(()=>{}); }
-}
-function updateCartBar(){
-  const items = state.cart.reduce((a,b)=>a+b.qty,0);
-  const total = sum(state.cart);
-  const bar = el("#cartbar");
-  if(items>0){ bar.style.display="block"; el("#cartbar-left").innerText = "🛒 "+items+" item"+(items>1?"s":""); el("#cartbar-right").innerText = £(total); }
-  else { bar.style.display="none"; hideMain(); }
-}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
+function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
+function haptic(k="impact"){try{tg.HapticFeedback?.impactOccurred?.(k)}catch{}}
+function copy(t,n){navigator.clipboard.writeText(t).then(()=>{if(n){n.innerText="Copied";setTimeout(()=>n.innerText="Copy",900);}haptic("soft");});}
+function setMainButton(t,f){tg.MainButton?.show?.();tg.MainButton?.setParams?.({text:t});tg.MainButton?.onClick?.(()=>{});tg.MainButton?.onClick?.(f);}
+function hideMain(){tg.MainButton?.hide?.();}
+function setBack(s,f){if(s){tg.BackButton?.show?.();tg.BackButton?.onClick?.(()=>f?.());}else{tg.BackButton?.hide?.();tg.BackButton?.onClick?.(()=>{});}}
+function updateCartBar(){const items=state.cart.reduce((a,b)=>a+b.qty,0);const total=sum(state.cart);const bar=el("#cartbar");if(items>0){bar.style.display="block";el("#cartbar-left").innerText=`🛒 ${items} item${items>1?"s":""}`;el("#cartbar-right").innerText=pound(total);}else{bar.style.display="none";hideMain();}}
 
 /* ====== NAV ====== */
-function go(name, params={}){ state.route = {name, params}; render(); }
+function go(name,params={}){state.route={name,params};render();}
 
 /* ====== RENDER ====== */
 function render(){
-  const app = el("#app");
+  const app=el("#app");
   if(state.route.name==="home") return renderHome(app);
-  if(state.route.name==="pdp") return renderPDP(app, state.route.params.id);
+  if(state.route.name==="pdp") return renderPDP(app,state.route.params.id);
   if(state.route.name==="checkout") return renderCheckout(app);
   if(state.route.name==="confirm") return renderConfirm(app);
   if(state.route.name==="returns") return renderReturns(app);
@@ -145,315 +163,295 @@ function render(){
 
 function renderHome(app){
   setBack(false);
-  const list = PRODUCTS.filter(p=>p.cat===state.tab);
-  let tabs = '';
-  CATEGORIES.forEach(c=>{
-    tabs += '<button class="tab '+(c===state.tab?'active':'')+'" onclick="state.tab=\''+c+'\';render()">'+c+'</button>';
-  });
-  let grid = '';
-  list.forEach(p=>{
-    grid += ''
-    + '<article class="card" onclick="go(\'pdp\',{id:\''+p.id+'\'});">'
-    +   '<img class="img" src="'+p.img+'" alt="'+p.name+'"/>'
-    +   '<div class="pad">'
-    +     '<div class="brand">'+p.brand+'</div>'
-    +     '<div class="name">'+p.name+'</div>'
-    +     '<div class="row-between">'
-    +       '<div class="price">'+£(p.price)+'</div>'
-    +       (p.stock<=3?'<div class="low mono">Only '+p.stock+' left</div>':'')
-    +     '</div>'
-    +   '</div>'
-    + '</article>';
-  });
-  app.innerHTML = ''
-  + '<header>'
-  +   '<div class="row">'
-  +     '<div class="title">Drip Club</div>'
-  +     '<div class="grow"></div>'
-  +     '<a class="link" href="'+SUPPORT_LINK+'">Support</a>'
-  +   '</div>'
-  +   '<div class="tabs">'+tabs+'</div>'
-  + '</header>'
-  + '<div class="section">'
-  +   '<div class="grid">'+grid+'</div>'
-  +   '<div class="help">Returns & Delivery → <a class="link" href="#" onclick="go(\'returns\')">Read policy</a></div>'
-  + '</div>';
+
+  // Filter by tab + query
+  const q = state.query.trim().toLowerCase();
+  const list = PRODUCTS.filter(p=>p.cat===state.tab && (!q || (p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q))));
+
+  // Tabs
+  const tabs = CATEGORIES.map(c=>`<button class="tab ${c===state.tab?"active":""}" onclick="state.tab='${c}';render()">${c}</button>`).join("");
+
+  // Cards
+  const grid = list.map(p=>`
+    <article class="card" onclick="go('pdp',{id:'${p.id}'})">
+      <img class="img" src="${p.img}" alt="${p.name}"/>
+      <div class="pad">
+        <div class="brand">${p.brand}</div>
+        <div class="name">${p.name}</div>
+        <div class="row-between">
+          <div class="price">${pound(p.price)}</div>
+          ${p.stock<=3?`<div class="low mono">Only ${p.stock} left</div>`:""}
+        </div>
+      </div>
+    </article>
+  `).join("");
+
+  // Featured strip
+  const featured = FEATURED.map(f=>`
+    <div class="feat" onclick="state.tab='${f.tab}';render()">
+      <img src="${f.img}" alt="${f.title}"/>
+      <div class="pad">
+        <div class="row-between">
+          <div>
+            <div class="name" style="font-size:15px">${f.title}</div>
+            <div class="muted" style="font-size:12px">${f.sub}</div>
+          </div>
+          <span class="pill">Shop →</span>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  app.innerHTML = `
+    <header>
+      <div class="row">
+        <div class="title">Drip Club</div>
+        <div class="grow"></div>
+        <a class="link" href="${SUPPORT_LINK}">Support</a>
+      </div>
+      <div class="marquee">
+        Nike <span class="dot">•</span> Jordan <span class="dot">•</span> Adidas <span class="dot">•</span> Dior <span class="dot">•</span> Apple
+      </div>
+    </header>
+
+    <div class="section">
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <div class="pill mono">New drops live</div>
+            <div class="hero-h1">Premium pieces. Fast checkout. In Telegram.</div>
+            <div class="hero-sub">Authenticity-first curation. 30-day returns. Live chat support.</div>
+            <div class="hero-cta">
+              <button class="btn" onclick="state.tab='Men';render()">Shop Men</button>
+              <button class="btn" onclick="state.tab='Women';render()">Shop Women</button>
+              <button class="btn" onclick="state.tab='Fragrance';render()">Fragrance</button>
+            </div>
+
+            <div class="search">
+              <input id="q" placeholder="Search brand or item…" value="${state.query||""}" oninput="state.query=this.value;render()"/>
+              <button class="btn" onclick="state.query='';document.getElementById('q').value='';render()">Clear</button>
+            </div>
+
+            <div class="chipbar">
+              <div class="chip" onclick="state.query='hoodie';render()">Hoodies</div>
+              <div class="chip" onclick="state.query='tee';render()">Tees</div>
+              <div class="chip" onclick="state.query='100 ml';render()">100 ml</div>
+              <div class="chip" onclick="state.query='airpods';render()">AirPods</div>
+            </div>
+
+            <div class="trust">
+              <div class="t">✅ Authenticity verified</div>
+              <div class="t">↩️ 30-day returns</div>
+              <div class="t">💬 Live Telegram support</div>
+            </div>
+          </div>
+          <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1543076447-215ad9ba6923?q=80&w=1200&auto=format&fit=crop" alt="Hero"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED -->
+      <div class="featured">${featured}</div>
+
+      <!-- TABS -->
+      <div class="tabs" style="margin-top:12px">${tabs}</div>
+
+      <!-- GRID -->
+      <div class="grid" style="margin-top:10px">
+        ${grid || `<div class="muted" style="grid-column:1/-1">No items match “${state.query}”.</div>`}
+      </div>
+
+      <div class="help" style="margin-top:10px">Returns & Delivery → <a class="link" href="#" onclick="go('returns')">Read policy</a></div>
+    </div>
+  `;
 
   updateCartBar();
-  if(state.cart.length>0){
-    setMainButton('Checkout — '+£(sum(state.cart)), ()=> go('checkout'));
-  } else hideMain();
+  if(state.cart.length>0){ setMainButton(`Checkout — ${pound(sum(state.cart))}`, ()=> go("checkout")); } else hideMain();
 }
 
-function renderPDP(app, id){
-  const p = PRODUCTS.find(x=>x.id===id);
-  if(!p){ go("home"); return }
-  setBack(true, ()=> go("home"));
-  const sel = (p.sizes&&p.sizes.length?p.sizes[0]:"—");
-  app.innerHTML = ''
-  + '<header><div class="row"><div class="title">'+p.brand+'</div><div class="grow"></div><a class="link" href="'+SUPPORT_LINK+'">Support</a></div></header>'
-  + '<div class="section"><div class="box">'
-  + '<img class="img" src="'+p.img+'" alt="'+p.name+'"/>'
-  + '<div class="row-between" style="margin-top:10px"><div class="name" style="font-size:16px">'+p.name+'</div><div class="price mono">'+£(p.price)+'</div></div>'
-  + (p.stock<=3?'<div class="low">Only '+p.stock+' left</div>':'')
-  + '<div class="field"><label class="muted">Size</label>'
-  +   '<select id="size">'+p.sizes.map(s=>'<option '+(s===sel?'selected':'')+'>'+s+'</option>').join('')+'</select>'
-  + '</div>'
-  + '<p class="muted" style="font-size:13px">Authenticity: only verifiable designs. No ghosts.</p>'
-  + '<div class="hr"></div>'
-  + '<button class="btn full" onclick="addToCart(\''+p.id+'\')">Add to Cart</button>'
-  + '<div class="help">Having trouble? <a class="link" href="'+SUPPORT_LINK+'">Chat to support</a></div>'
-  + '</div></div>';
-
-  setMainButton('Checkout — '+£(sum(state.cart)), ()=> state.cart.length?go("checkout"):addToCart(p.id));
+function renderPDP(app,id){
+  const p=PRODUCTS.find(x=>x.id===id); if(!p){go("home");return}
+  setBack(true,()=>go("home"));
+  const sel=(p.sizes&&p.sizes.length?p.sizes[0]:"—");
+  app.innerHTML=`
+    <header><div class="row"><div class="title">${p.brand}</div><div class="grow"></div><a class="link" href="${SUPPORT_LINK}">Support</a></div></header>
+    <div class="section">
+      <div class="box">
+        <img class="img" src="${p.img}" alt="${p.name}"/>
+  <div class="row-between" style="margin-top:10px"><div class="name" style="font-size:16px">${p.name}</div><div class="price mono">${pound(p.price)}</div></div>
+        ${p.stock<=3?`<div class="low">Only ${p.stock} left</div>`:""}
+        <div class="field"><label class="muted">Size</label><select id="size">${p.sizes.map(s=>`<option ${s===sel?"selected":""}>${s}</option>`).join("")}</select></div>
+        <p class="muted" style="font-size:13px">Authenticity guaranteed. Verified designs only.</p>
+        <div class="hr"></div>
+        <button class="btn full" onclick="addToCart('${p.id}')">Add to Cart</button>
+        <div class="help">Need help? <a class="link" href="${SUPPORT_LINK}">Chat to support</a></div>
+      </div>
+    </div>`;
+  setMainButton(`Checkout — ${pound(sum(state.cart))}`,()=> state.cart.length?go("checkout"):addToCart(p.id));
   updateCartBar();
 }
 
 function addToCart(id){
-  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
-  const selEl = el("#size"); const sel = selEl? selEl.value : (p.sizes?.[0] ?? "—");
-  const existing = state.cart.find(i=>i.id===id && i.size===sel);
-  if(existing){ existing.qty = Math.min(existing.qty+1, 99); }
-  else { state.cart.push({id, name:p.name, price:p.price, size:sel, qty:1}); }
-  save("cart", state.cart);
-  haptic("rigid");
-  updateCartBar();
-  setMainButton('Checkout — '+£(sum(state.cart)), ()=> go("checkout"));
+  const p=PRODUCTS.find(x=>x.id===id); if(!p)return;
+  const sel=el("#size")?.value??(p.sizes?.[0]??"—");
+  const ex=state.cart.find(i=>i.id===id&&i.size===sel);
+  if(ex){ex.qty=Math.min(ex.qty+1,99);}else{state.cart.push({id,name:p.name,price:p.price,size:sel,qty:1});}
+  save("cart",state.cart); haptic("rigid"); updateCartBar();
+  setMainButton(`Checkout — ${pound(sum(state.cart))}`,()=>go("checkout"));
 }
 
 function renderCartList(){
-  if(state.cart.length===0) return '<div class="muted">Cart is empty.</div>';
-  let list = '<div class="list">';
-  state.cart.forEach((it,idx)=>{
-    list += ''
-    + '<div class="box">'
-    +   '<div class="row-between">'
-    +     '<div>'
-    +       '<div class="name">'+it.name+'</div>'
-    +       '<div class="muted mono" style="font-size:12px">'+it.size+'</div>'
-    +     '</div>'
-    +     '<div class="mono">'+£(it.price*it.qty)+'</div>'
-    +   '</div>'
-    +   '<div class="row-between" style="margin-top:8px">'
-    +     '<div class="qty">'
-    +       '<button onclick="decQty('+idx+')">−</button>'
-    +       '<div class="mono">'+it.qty+'</div>'
-    +       '<button onclick="incQty('+idx+')">+</button>'
-    +     '</div>'
-    +     '<button class="btn" onclick="removeItem('+idx+')">Remove</button>'
-    +   '</div>'
-    + '</div>';
-  });
-  list += '</div>';
-  return list;
+  if(state.cart.length===0) return `<div class="muted">Cart is empty.</div>`;
+  return `<div class="list">${state.cart.map((it,idx)=>`
+    <div class="box">
+      <div class="row-between">
+        <div><div class="name">${it.name}</div><div class="muted mono" style="font-size:12px">${it.size}</div></div>
+  <div class="mono">${pound(it.price*it.qty)}</div>
+      </div>
+      <div class="row-between" style="margin-top:8px">
+        <div class="qty">
+          <button onclick="decQty(${idx})">−</button>
+          <div class="mono">${it.qty}</div>
+          <button onclick="incQty(${idx})">+</button>
+        </div>
+        <button class="btn" onclick="removeItem(${idx})">Remove</button>
+      </div>
+    </div>`).join("")}</div>`;
 }
-function incQty(i){ state.cart[i].qty=Math.min(state.cart[i].qty+1,99); save("cart",state.cart); render(); }
-function decQty(i){ state.cart[i].qty=Math.max(state.cart[i].qty-1,1); save("cart",state.cart); render(); }
-function removeItem(i){
-  const removed = state.cart.splice(i,1)[0]; save("cart",state.cart); render();
-  toastUndo(removed);
-}
+function incQty(i){state.cart[i].qty=Math.min(state.cart[i].qty+1,99);save("cart",state.cart);render();}
+function decQty(i){state.cart[i].qty=Math.max(state.cart[i].qty-1,1);save("cart",state.cart);render();}
+function removeItem(i){const removed=state.cart.splice(i,1)[0];save("cart",state.cart);render();toastUndo(removed);}
 function toastUndo(item){
-  haptic("soft");
-  const n = document.createElement("div");
+  haptic("soft"); const n=document.createElement("div");
   n.className="box"; n.style.position="fixed"; n.style.left="12px"; n.style.right="12px"; n.style.bottom="72px"; n.style.zIndex="60";
-  n.innerHTML = '<div class="row-between"><div>Removed <span class="mono">'+item.name+'</span></div><button class="btn" id="undo">Undo</button></div>';
-  document.body.appendChild(n);
-  let t = setTimeout(()=> n.remove(), 3000);
-  n.querySelector("#undo").onclick = ()=>{ clearTimeout(t); state.cart.push(item); save("cart",state.cart); n.remove(); render(); };
+  n.innerHTML=`<div class="row-between"><div>Removed <span class="mono">${item.name}</span></div><button class="btn" id="undo">Undo</button></div>`;
+  document.body.appendChild(n); let t=setTimeout(()=>n.remove(),3000);
+  n.querySelector("#undo").onclick=()=>{clearTimeout(t);state.cart.push(item);save("cart",state.cart);n.remove();render();};
 }
 
-/* ====== CHECKOUT ====== */
+/* ====== CHECKOUT / CONFIRM / RETURNS (unchanged core) ====== */
 function renderCheckout(app){
-  if(state.cart.length===0){ go("home"); return }
-  setBack(true, ()=> go("home"));
-  const subtotal = sum(state.cart);
-  const shipping = subtotal>=100?0:4.95;
-  const total = +(subtotal+shipping).toFixed(2);
-  if(!state.hold){ state.hold = { expiresAt: Date.now()+45*60*1000 }; }
-  const left = Math.max(0, Math.floor((state.hold.expiresAt - Date.now())/1000));
-  const ref = state.order?.uniqueRef ?? uniqueRef();
+  if(state.cart.length===0){go("home");return}
+  setBack(true,()=>go("home"));
+  const subtotal=sum(state.cart); const shipping=subtotal>=100?0:4.95; const total=+(subtotal+shipping).toFixed(2);
+  if(!state.hold){state.hold={expiresAt:Date.now()+45*60*1000};}
+  const left=Math.max(0,Math.floor((state.hold.expiresAt-Date.now())/1000));
+  const ref=state.order?.uniqueRef??uniqueRef();
+  app.innerHTML=`
+    <header><div class="row"><div class="title">Checkout</div><div class="grow"></div><a class="link" href="${SUPPORT_LINK}">Support</a></div></header>
+    <div class="section">
+      <div class="box">
+        <div class="row-between"><div class="title">Your bag</div><a class="link" href="#" onclick="go('home')">Add more</a></div>
+        ${renderCartList()}
+        <div class="hr"></div>
+  <div class="row-between"><div class="muted">Subtotal</div><div class="mono">${pound(subtotal)}</div></div>
+  <div class="row-between"><div class="muted">Shipping</div><div class="mono">${shipping===0?"Free":pound(shipping)}</div></div>
+  <div class="row-between" style="margin-top:8px"><div>Total</div><div class="mono" style="font-weight:700">${pound(total)}</div></div>
+        <div class="help mono">We’ll reserve these for <span id="hold">00:00</span> while you pay.</div>
+      </div>
 
-  app.innerHTML = ''
-  + '<header><div class="row"><div class="title">Checkout</div><div class="grow"></div><a class="link" href="'+SUPPORT_LINK+'">Support</a></div></header>'
-  + '<div class="section">'
+      <div class="box">
+        <div class="title" style="font-size:16px">Contact & Delivery</div>
+        ${["email","phone","name","address","city","postcode"].map(k=>`
+          <div class="field"><label class="muted">${k[0].toUpperCase()+k.slice(1)}</label>
+          <input id="f-${k}" value="${state.user[k]??""}" placeholder="${k==='email'?'you@example.com':''}"/></div>`).join("")}
+        <div class="field"><label class="muted">Country</label><input id="f-country" value="${state.user.country}"/></div>
+      </div>
 
-  + '<div class="box">'
-  +   '<div class="row-between"><div class="title">Your bag</div><a class="link" href="#" onclick="go(\'home\')">Add more</a></div>'
-  +   renderCartList()
-  +   '<div class="hr"></div>'
-  +   '<div class="row-between"><div class="muted">Subtotal</div><div class="mono">'+£(subtotal)+'</div></div>'
-  +   '<div class="row-between"><div class="muted">Shipping</div><div class="mono">'+(shipping===0?'Free':£(shipping))+'</div></div>'
-  +   '<div class="row-between" style="margin-top:8px"><div>Total</div><div class="mono" style="font-weight:700">'+£(total)+'</div></div>'
-  +   '<div class="help mono">We’ll reserve these for <span id="hold">00:00</span> while you pay.</div>'
-  + '</div>'
+      <div class="box">
+        <div class="row-between"><div class="title" style="font-size:16px">Pay by bank</div></div>
+        <button class="btn full" style="margin-bottom:10px" onclick="openBankingPay(${total}, '${ref}')">Pay by bank (Open Banking)</button>
+        <div class="help">Or pay manually using your banking app. Include the reference below so we can auto-match your payment.</div>
+        ${copyRow("Payee",BANK.payee)}
+        ${copyRow("Sort code",BANK.sortCode)}
+        ${copyRow("Account no.",BANK.accountNo)}
+        ${copyRow("IBAN",BANK.iban)}
+  ${copyRow("Amount",pound(total), String(total))}
+        ${copyRow("Unique reference",ref, ref, "ref")}
+        <div class="help">Questions about payment? <a class="link" href="${SUPPORT_LINK}">Chat to support</a></div>
+      </div>
 
-  + '<div class="box">'
-  +   '<div class="title" style="font-size:16px">Contact & Delivery</div>'
-  +   renderField("email","you@example.com")
-  +   + renderField("phone","")
-  +   + renderField("name","")
-  +   + renderField("address","")
-  +   + renderField("city","")
-  +   + renderField("postcode","")
-  +   + '<div class="field"><label class="muted">Country</label><input id="f-country" value="'+(state.user.country||"United Kingdom")+'"/></div>'
-  + '</div>'
-
-  + '<div class="box">'
-  +   '<div class="row-between"><div class="title" style="font-size:16px">Pay by bank</div></div>'
-  +   '<button class="btn full" style="margin-bottom:10px" onclick="openBankingPay('+total+', \''+ref+'\')">Pay by bank (Open Banking)</button>'
-  +   '<div class="help">Or pay manually using your banking app. Include the reference below so we can auto-match your payment.</div>'
-  +   copyRow("Payee",BANK.payee)
-  +   + copyRow("Sort code",BANK.sortCode)
-  +   + copyRow("Account no.",BANK.accountNo)
-  +   + copyRow("IBAN",BANK.iban)
-  +   + copyRow("Amount",£(total), String(total))
-  +   + copyRow("Unique reference",ref, ref, "ref")
-  +   + '<div class="help">Questions about payment? <a class="link" href="'+SUPPORT_LINK+'">Chat to support</a></div>'
-  + '</div>'
-
-  + '<div class="box">'
-  +   '<div class="row-between"><div class="title" style="font-size:16px">After you’ve paid</div></div>'
-  +   '<div class="help">Tap the button below. We’ll verify and update your order here.</div>'
-  +   '<div class="field"><label class="muted">Upload proof (optional)</label><input type="file" id="proof" accept="image/*,application/pdf"/></div>'
-  +   '<button class="btn full" onclick="placeOrder('+total+', \''+ref+'\')">I’ve paid — place order</button>'
-  +   '<div class="help">Returns? See <a class="link" href="#" onclick="go(\'returns\')">policy</a>.</div>'
-  + '</div>'
-
-  + '</div>';
-
-  setMainButton('Checkout — '+£(total), ()=> el("button.btn.full")?.click());
-  updateCartBar();
-  tickHold(left);
+      <div class="box">
+        <div class="row-between"><div class="title" style="font-size:16px">After you’ve paid</div></div>
+        <div class="help">Tap the button below. We’ll verify and update your order here.</div>
+        <div class="field"><label class="muted">Upload proof (optional)</label><input type="file" id="proof" accept="image/*,application/pdf"/></div>
+        <button class="btn full" onclick="placeOrder(${total}, '${ref}')">I’ve paid — place order</button>
+        <div class="help">Returns? See <a class="link" href="#" onclick="go('returns')">policy</a>.</div>
+      </div>
+    </div>`;
+  setMainButton(`Checkout — ${pound(total)}`,()=>document.querySelector("button.btn.full")?.click());
+  updateCartBar(); tickHold(left);
 }
-
-function renderField(key, placeholder){
-  const v = state.user[key]??"";
-  return '<div class="field"><label class="muted">'+cap(key)+'</label><input id="f-'+key+'" value="'+v+'" placeholder="'+(placeholder||'')+'"/></div>';
-}
-function copyRow(label, value, rawCopy, id){
-  const copyVal = (rawCopy!==undefined? rawCopy : value);
-  return '<div class="copy"><div><div class="muted">'+label+'</div><div class="mono" '+(id?'id="'+id+'"':'')+'>'+value+'</div></div><button onclick="copy(\''+copyVal.replace(/'/g,"\\'")+'\', this)">Copy</button></div>';
-}
-function cap(s){ return s? s[0].toUpperCase()+s.slice(1) : s; }
-
-function tickHold(seconds){
-  function fmt(s){ const m=String(Math.floor(s/60)).padStart(2,"0"); const ss=String(s%60).padStart(2,"0"); return m+':'+ss; }
-  const n = el("#hold"); if(!n) return;
-  let s = seconds; n.innerText = fmt(s);
-  const id = setInterval(()=>{ s = Math.max(0, s-1); n.innerText = fmt(s); if(s===0){ clearInterval(id); state.hold=null; } },1000);
-}
-
-function openBankingPay(amount, ref){
-  // Placeholder demo — later replace with real provider deep link + return handler
-  state.order = {
-    id: 'O-'+Date.now(),
-    uniqueRef: ref,
-    items: state.cart,
-    subtotal: +sum(state.cart).toFixed(2),
-    shipping: +(sum(state.cart)>=100?0:4.95).toFixed(2),
-    total:+amount.toFixed(2),
-    user: {...state.user},
-    payment:{method:"open_banking", status:"AWAITING_PROVIDER"},
-    status:"AWAITING_PAYMENT",
-    proof:null
-  };
-  save("lastOrder", state.order);
-  haptic("soft");
-  alert("Open Banking placeholder: imagine your bank app opened.\nReturning to order confirmation…");
-  // Attempt save; non-blocking
-  fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(state.order)}).catch(()=>{});
-  state.cart = []; save("cart", state.cart);
-  go("confirm");
-}
-
-async function placeOrder(total, ref){
-  ["email","phone","name","address","city","postcode","country"].forEach(k=>{
-    const v = el("#f-"+k); state.user[k] = v? (v.value||"").trim() : (state.user[k]||"");
-  });
-  const order = {
-    id: 'O-'+Date.now(),
-    uniqueRef: ref || (el("#ref")?.innerText || uniqueRef()),
-    items: state.cart,
-    subtotal: +sum(state.cart).toFixed(2),
-    shipping: +(sum(state.cart)>=100?0:4.95).toFixed(2),
-    total:+(+total||sum(state.cart)).toFixed(2),
-    user: {...state.user},
-    payment:{method:"bank_transfer", status:"AWAITING_REVIEW"},
-    status:"AWAITING_PAYMENT",
-    proof:null
-  };
-  const file = el("#proof")?.files?.[0];
-  if(file){ order.proof = { name:file.name, size:file.size, type:file.type }; }
-
-  try{
-    await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(order)});
-  }catch(e){}
-
-  state.order = order;
-  save("lastOrder", order);
-  state.cart = []; save("cart", state.cart);
-  haptic("soft");
-  go("confirm");
-}
-
-/* ====== CONFIRM ====== */
 function renderConfirm(app){
   setBack(false);
-  const o = state.order ?? load("lastOrder", null);
-  if(!o){ go("home"); return }
-  let lines = '';
-  o.items.forEach(it=>{
-    lines += '<div class="row-between"><div>'+it.name+' <span class="muted">('+it.size+')</span> × '+it.qty+'</div><div class="mono">'+£(it.qty*it.price)+'</div></div>';
-  });
-
-  app.innerHTML = ''
-  + '<header><div class="row"><div class="title">Order placed</div><div class="grow"></div><a class="link" href="'+SUPPORT_LINK+'">Support</a></div></header>'
-  + '<div class="section">'
-  +   '<div class="box">'
-  +     '<div class="row-between"><div class="title" style="font-size:16px">Thanks — we’ll verify your transfer</div><div class="pill">Under review</div></div>'
-  +     '<div class="help">We match by amount and your unique reference below. You’ll get updates here.</div>'
-  +     copyRow("Order",o.id,o.id)
-  +     + copyRow("Unique reference",o.uniqueRef,o.uniqueRef)
-  +   '</div>'
-  +   '<div class="box">'
-  +     '<div class="title" style="font-size:16px">Summary</div>'
-  +     lines
-  +     '<div class="hr"></div>'
-  +     '<div class="row-between"><div class="muted">Subtotal</div><div class="mono">'+£(o.subtotal)+'</div></div>'
-  +     '<div class="row-between"><div class="muted">Shipping</div><div class="mono">'+£(o.shipping)+'</div></div>'
-  +     '<div class="row-between" style="margin-top:8px"><div>Total</div><div class="mono" style="font-weight:700">'+£(o.total)+'</div></div>'
-  +   '</div>'
-  +   '<div class="box"><div class="help">Need anything else?</div>'
-  +     '<div class="row" style="gap:8px">'
-  +       '<a class="btn grow" href="#" onclick="go(\'home\')">Continue shopping</a>'
-  +       '<a class="btn grow" href="'+SUPPORT_LINK+'">Message about this order</a>'
-  +     '</div>'
-  +   '</div>'
-  + '</div>';
+  const o=state.order??load("lastOrder",null); if(!o){go("home");return}
+  app.innerHTML=`
+    <header><div class="row"><div class="title">Order placed</div><div class="grow"></div><a class="link" href="${SUPPORT_LINK}">Support</a></div></header>
+    <div class="section">
+      <div class="box">
+        <div class="row-between"><div class="title" style="font-size:16px">Thanks — we’ll verify your transfer</div><div class="pill">Under review</div></div>
+        <div class="help">We match by amount and your unique reference below. You’ll get updates here.</div>
+        ${copyRow("Order",o.id,o.id)}
+        ${copyRow("Unique reference",o.uniqueRef,o.uniqueRef)}
+      </div>
+      <div class="box">
+        <div class="title" style="font-size:16px">Summary</div>
+  ${o.items.map(it=>`<div class="row-between"><div>${it.name} <span class="muted">(${it.size})</span> × ${it.qty}</div><div class="mono">${pound(it.qty*it.price)}</div></div>`).join("")}
+        <div class="hr"></div>
+  <div class="row-between"><div class="muted">Subtotal</div><div class="mono">${pound(o.subtotal)}</div></div>
+  <div class="row-between"><div class="muted">Shipping</div><div class="mono">${pound(o.shipping)}</div></div>
+  <div class="row-between" style="margin-top:8px"><div>Total</div><div class="mono" style="font-weight:700">${pound(o.total)}</div></div>
+      </div>
+      <div class="box">
+        <div class="help">Need anything else?</div>
+        <div class="row" style="gap:8px">
+          <a class="btn grow" href="#" onclick="go('home')">Continue shopping</a>
+          <a class="btn grow" href="${SUPPORT_LINK}">Message about this order</a>
+        </div>
+      </div>
+    </div>`;
+  hideMain(); updateCartBar();
+}
+function renderReturns(app){
+  setBack(true,()=>go("home"));
+  app.innerHTML=`
+    <header><div class="row"><div class="title">Returns & Delivery</div><div class="grow"></div></div></header>
+    <div class="section"><div class="box">
+      <p>Returns within <b>30 days</b> in original condition. Email receipts are required.</p>
+      <p>To start a return, message us: <a class="link" href="${SUPPORT_LINK}">Open chat</a> and include your order ID.</p>
+      <p>Delivery: Standard 2–4 business days; Express 1–2 business days.</p>
+    </div></div>`;
   hideMain();
-  updateCartBar();
 }
 
-/* ====== RETURNS PAGE ====== */
-function renderReturns(app){
-  setBack(true, ()=> go("home"));
-  app.innerHTML = ''
-  + '<header><div class="row"><div class="title">Returns & Delivery</div><div class="grow"></div></div></header>'
-  + '<div class="section"><div class="box">'
-  + '<p>Returns within <b>30 days</b> in original condition. Email receipts are required.</p>'
-  + '<p>To start a return, message us: <a class="link" href="'+SUPPORT_LINK+'">Open chat</a> and include your order ID.</p>'
-  + '<p>Delivery: Standard 2–4 business days; Express 1–2 business days.</p>'
-  + '</div></div>';
-  hideMain();
+/* ====== Bits ====== */
+function copyRow(label,value,rawCopy,id){
+  const cp = (rawCopy!==undefined ? rawCopy : value);
+  return `<div class="copy"><div><div class="muted">${label}</div><div class="mono" ${id?`id="${id}"`:""}>${value}</div></div><button onclick="copy('${String(cp).replace(/'/g,"\\'")}', this)">Copy</button></div>`;
+}
+function tickHold(seconds){
+  function fmt(s){const m=String(Math.floor(s/60)).padStart(2,"0");const ss=String(s%60).padStart(2,"0");return `${m}:${ss}`;}
+  const n=el("#hold"); if(!n) return; let s=seconds; n.innerText=fmt(s);
+  const id=setInterval(()=>{s=Math.max(0,s-1);n.innerText=fmt(s);if(s===0){clearInterval(id);state.hold=null;}},1000);
+}
+function openBankingPay(amount,ref){
+  state.order={id:`O-${Date.now()}`,uniqueRef:ref,items:state.cart,subtotal:+sum(state.cart).toFixed(2),shipping:+(sum(state.cart)>=100?0:4.95).toFixed(2),total:+amount.toFixed(2),user:{...state.user},payment:{method:"open_banking",status:"AWAITING_PROVIDER"},status:"AWAITING_PAYMENT",proof:null};
+  save("lastOrder",state.order); haptic("soft"); alert("Open Banking placeholder: your bank app would open.\nReturning to order confirmation…");
+  fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(state.order)}).catch(()=>{});
+  state.cart=[]; save("cart",state.cart); go("confirm");
+}
+async function placeOrder(total,ref){
+  ["email","phone","name","address","city","postcode","country"].forEach(k=>{state.user[k]=el("#f-"+k)?.value?.trim()??state.user[k];});
+  const order={id:`O-${Date.now()}`,uniqueRef:ref||el("#ref")?.innerText||uniqueRef(),items:state.cart,subtotal:+sum(state.cart).toFixed(2),shipping:+(sum(state.cart)>=100?0:4.95).toFixed(2),total:+(+total||sum(state.cart)).toFixed(2),user:{...state.user},payment:{method:"bank_transfer",status:"AWAITING_REVIEW"},status:"AWAITING_PAYMENT",proof:null};
+  const file=el("#proof")?.files?.[0]; if(file){order.proof={name:file.name,size:file.size,type:file.type};}
+  try{await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(order)});}catch(e){}
+  state.order=order; save("lastOrder",order); state.cart=[]; save("cart",state.cart); haptic("soft"); go("confirm");
 }
 
 /* ====== INIT ====== */
-(function init(){
-  tg.ready?.();
-  tg.expand?.();
-  go("home");
-})();
+(function init(){ tg.ready?.(); tg.expand?.(); go("home"); })();
 </script>
 </body>
 </html>
