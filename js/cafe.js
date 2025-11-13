@@ -84,10 +84,8 @@ const Cafe = (function () {
   }
 
   function renderOrder() {
-    const container = qs(".js-order-items");
-    if (!container) return;
-
-    container.innerHTML = "";
+    const sheetBody = qs(".order-sheet-body");
+    if (!sheetBody) return;
 
     const selected = items.filter((i) => i.qty > 0);
     const total = selected.reduce(
@@ -97,25 +95,88 @@ const Cafe = (function () {
 
     currentOrder = { items: selected, total };
 
-    selected.forEach((i) => {
-      const row = document.createElement("div");
-      row.className = "js-order-item";
-      row.dataset.itemId = i.id;
-      row.innerHTML = `
-        <img src="${i.img}" alt="${i.name}">
-        <div style="flex:1">
-          <div class="cafe-order-item-title">
-            ${i.name}
-            <span class="cafe-order-item-counter">${i.qty}x</span>
+    // Build items container
+    const itemsContainer = qs(".js-order-items") || document.createElement("div");
+    itemsContainer.className = "js-order-items";
+    itemsContainer.innerHTML = "";
+
+    if (selected.length === 0) {
+      itemsContainer.innerHTML = '<div class="empty-cart-msg">Your bag is empty</div>';
+    } else {
+      selected.forEach((i) => {
+        const row = document.createElement("div");
+        row.className = "js-order-item";
+        row.dataset.itemId = i.id;
+        row.innerHTML = `
+          <img src="${i.img}" alt="${i.name}">
+          <div class="order-item-info">
+            <div class="cafe-order-item-title">${i.name}</div>
+            <div class="cafe-order-item-price">£${i.price.toFixed(2)} each</div>
           </div>
-        </div>
-        <div class="cafe-order-item-price">£${(i.price * i.qty).toFixed(2)}</div>
+          <div class="order-item-controls">
+            <button class="order-qty-btn js-order-decr" data-id="${i.id}" aria-label="Decrease quantity">−</button>
+            <span class="order-qty-display">${i.qty}</span>
+            <button class="order-qty-btn js-order-incr" data-id="${i.id}" aria-label="Increase quantity">+</button>
+          </div>
+  function updateStatusBar() {
+    const status = qs(".js-status");
+    if (!status) return;
+
+    if (!currentOrder.items.length) {
+      status.textContent = "No items yet";
+      return;
+    }
+
+    const totalQty = currentOrder.items.reduce((sum, i) => sum + i.qty, 0);
+    status.textContent = `${totalQty} item${totalQty > 1 ? "s" : ""} • £${currentOrder.total.toFixed(2)}`;
+  }     </div>
+        <button class="clear-cart-btn js-clear-cart">Clear All</button>
       `;
-      container.appendChild(row);
-    });
+    } else {
+      footer.innerHTML = "";
+    }
+
+    // Update DOM
+    sheetBody.innerHTML = "";
+    sheetBody.appendChild(itemsContainer);
+    if (selected.length > 0) {
+      sheetBody.appendChild(footer);
+    }
+
+    // Wire up controls
+    wireOrderControls();
 
     updateStatusBar();
     updateMainButton();
+  }
+
+  function wireOrderControls() {
+    qsa(".js-order-incr").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        addOne(id);
+      });
+    });
+
+    qsa(".js-order-decr").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        removeOne(id);
+      });
+    });
+
+    const clearBtn = qs(".js-clear-cart");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (confirm("Clear all items from your bag?")) {
+          items.forEach((i) => (i.qty = 0));
+          renderOrder();
+        }
+      });
+    }
   }
 
   function updateStatusBar() {
