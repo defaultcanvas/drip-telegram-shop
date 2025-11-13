@@ -1,6 +1,42 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "drip-admin/package.json",
+      "use": "@vercel/next",
+      "config": {
+        "outputDirectory": "drip-admin"
+      }
+    },
+    {
+      "src": "**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "**/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "**/*.css", 
+      "use": "@vercel/static"
+    }
+  ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" }
+    {
+      "src": "/admin(.*)",
+      "dest": "drip-admin/$1"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "drip-admin/api/$1"
+    },
+    {
+      "src": "/webapp(.*)",
+      "dest": "drip-admin/webapp/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
   ]
 }
