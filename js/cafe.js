@@ -8,6 +8,7 @@ const Cafe = (function () {
 
   let items = [];
   let backButton = null;
+  let orderShell = null;
 
   const subBars = Object.create(null);
   const subButtons = Object.create(null);
@@ -230,6 +231,7 @@ const Cafe = (function () {
     if (landing) landing.style.display = "";
     if (itemsSection) itemsSection.style.display = "none";
     if (backButton) backButton.style.display = "none";
+    if (orderShell) orderShell.style.display = 'none';
 
     hideAllSubBars();
     resetAllSubSelections();
@@ -246,6 +248,7 @@ const Cafe = (function () {
     if (landing) landing.style.display = "none";
     if (itemsSection) itemsSection.style.display = "";
     if (backButton) backButton.style.display = "inline-flex";
+    if (orderShell) orderShell.style.display = '';
 
     activeCategory = cat || null;
 
@@ -275,6 +278,7 @@ const Cafe = (function () {
       readItemsFromDOM();
 
       backButton = qs("#global-back");
+      orderShell = qs('.order-shell');
 
       // Subcategory bars
       qsa(".subcategory-bar").forEach((bar) => {
