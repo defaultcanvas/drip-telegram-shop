@@ -110,8 +110,22 @@ const Cafe = (function () {
           </div>
         </div>
         <div class="cafe-order-item-price">£${(i.price * i.qty).toFixed(2)}</div>
+        <button class="order-remove-btn js-order-remove" data-id="${i.id}" title="Remove from bag">✕</button>
       `;
       container.appendChild(row);
+    });
+
+    // Wire remove buttons
+    qsa(".js-order-remove").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        const item = findItem(id);
+        if (item) {
+          item.qty = 0;
+          renderOrder();
+        }
+      });
     });
 
     updateStatusBar();
