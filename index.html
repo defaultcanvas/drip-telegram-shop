@@ -485,11 +485,9 @@
       transform-origin: bottom;
       transition: max-height 220ms ease, opacity 160ms ease;
       opacity: 0;
-      display: flex;
-      flex-direction: column;
     }
     .order-shell.is-open .order-sheet {
-      max-height: 360px;
+      max-height: 220px;
       opacity: 1;
     }
 
@@ -506,110 +504,30 @@
       flex-direction: column;
       gap: 6px;
       font-size: 12px;
-      max-height: 180px;
-      overflow-y: auto;
     }
     .js-order-item {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px;
-      border-radius: 12px;
-      background: rgba(15,23,42,0.6);
-      border: 1px solid rgba(148,163,184,0.2);
     }
     .js-order-item img {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       border-radius: 8px;
       object-fit: cover;
       flex-shrink: 0;
     }
-    .order-item-info {
-      flex: 1;
-      min-width: 0;
-    }
     .cafe-order-item-title {
       font-size: 12px;
-      font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    }
+    .cafe-order-item-counter {
+      font-size: 11px;
+      opacity: 0.8;
     }
     .cafe-order-item-price {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
       color: var(--drip-gold);
-      margin-top: 2px;
-    }
-    .order-item-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    .order-qty-btn {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      border: 1px solid rgba(148,163,184,0.4);
-      background: rgba(30,41,59,0.8);
-      color: #e5e7ff;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 140ms ease, transform 100ms ease;
-    }
-    .order-qty-btn:active {
-      transform: scale(0.92);
-    }
-    .order-qty-btn:hover {
-      background: rgba(51,65,85,0.9);
-    }
-    .order-qty-display {
-      min-width: 20px;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .order-footer {
-      padding: 8px 10px;
-      border-top: 1px solid rgba(148,163,184,0.2);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .order-total {
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .order-total-label {
-      color: rgba(226,232,240,0.8);
-      margin-right: 8px;
-    }
-    .order-total-amount {
-      color: var(--drip-gold);
-    }
-    .clear-cart-btn {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(239,68,68,0.6);
-      background: rgba(220,38,38,0.2);
-      color: #fca5a5;
-      cursor: pointer;
-      transition: background 140ms ease;
-    }
-    .clear-cart-btn:hover {
-      background: rgba(220,38,38,0.4);
-    }
-    .empty-cart-msg {
-      text-align: center;
-      padding: 20px;
-      color: rgba(148,163,184,0.8);
-      font-size: 12px;
     }
 
     /* Fade-in helpers already used in your markup */
@@ -1038,20 +956,20 @@
         <span class="cafe-item-title">Puffer Jacket</span>
         <span class="cafe-item-price">£42.00</span>
       </div>
-  </button>
-  <div class="order-sheet">
-    <div class="order-sheet-handle"></div>
-    <div class="order-sheet-body">
-      <!-- Filled by Cafe.renderOrder() -->
+      <div class="cafe-item-buttons">
+        <button class="cafe-item-decr-button js-item-decr-btn button-item ripple-handler">−</button>
+        <button class="cafe-item-incr-button js-item-incr-btn button-item ripple-handler"><span class="button-item-label">Add</span></button>
+      </div>
     </div>
-  </div>
-</div>iv class="cafe-item js-item" data-item-id="19" data-item-price="5200" data-category="kids" data-subcategory="tracksuit-sets">
+
+    <!-- 19 -->
+    <div class="cafe-item js-item" data-item-id="19" data-item-price="5200" data-category="kids" data-subcategory="tracksuit-sets">
       <div class="cafe-item-counter js-item-counter">1</div>
-<script src="https://tg.dev/js/jquery.min.js"></script>
-<script src="https://tg.dev/js/tgsticker.js?27"></script>
-<script src="js/cafe.js?version=3"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function(){/span>
+      <div class="cafe-item-photo">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&amp;fit=crop&amp;w=300&amp;q=80" alt="Colorblock Tracksuit">
+      </div>
+      <div class="cafe-item-label">
+        <span class="cafe-item-title">Colorblock Tracksuit</span>
         <span class="cafe-item-price">£52.00</span>
       </div>
       <div class="cafe-item-buttons">
