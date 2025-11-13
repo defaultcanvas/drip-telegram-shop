@@ -137,6 +137,14 @@ html.light body {
 	animation: rotateGlow 22s linear infinite;
 }
 
+/* ensure decorative layers don't block pointer events */
+.landing-card::before,
+.landing-glow,
+.landing-glow--2,
+.neon-scan {
+	pointer-events: none;
+}
+
 .landing-card > * {
 	position: relative;
 	z-index: 2;
@@ -220,6 +228,7 @@ html.light body {
 	text-align: left;
 	cursor: pointer;
 	transition: transform 0.35s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.35s ease, border-color 0.3s ease;
+	z-index: 4; /* ensure buttons sit above decorative layers */
 }
 
 .menu-btn::after {
