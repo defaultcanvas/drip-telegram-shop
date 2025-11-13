@@ -534,11 +534,25 @@ function updateCartCount() {
    CHECKOUT (SENDS CART JSON TO BOT)
 --------------------------------------------------- */
 
-function checkout() {
+async function checkout() {
   if (!state.cart.length) return;
-  const payload = JSON.stringify(state.cart);
-  tg.sendData(payload);
-  if (tg.close) tg.close();
+  
+  tg.HapticFeedback.notificationOccurred("success");
+
+  const payload = {
+    telegram_user_id: tg.initDataUnsafe.user?.id,
+    telegram_username: tg.initDataUnsafe.user?.username,
+    telegram_chat_id: tg.initDataUnsafe.receiver?.id ?? "",
+    total: state.total,
+    items: state.cart
+  };
+
+  await fetch("/api/telegram/checkout", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+
+  tg.close();
 }
 
 /* ------------------------------------------------
